@@ -1,0 +1,551 @@
+{
+  "nodes": [
+    {
+      "id": "check_compile_error",
+      "label": "Compile Error: Unclosed Delimiter in main.rs",
+      "file_type": "document",
+      "source_file": "check.txt",
+      "source_location": "line 2-17",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "check_err_unused_import_touchscreen",
+      "label": "Warning: Unused Import TouchScreen in deadman.rs",
+      "file_type": "document",
+      "source_file": "check_err.txt",
+      "source_location": "line 42-48",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "check_err_dead_code_read_reg",
+      "label": "Warning: Dead Code read_reg in i2c.rs",
+      "file_type": "document",
+      "source_file": "check_err.txt",
+      "source_location": "line 50-59",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "check_err_stm32f4xx_hal",
+      "label": "Dependency: stm32f4xx-hal v0.21.0",
+      "file_type": "document",
+      "source_file": "check_err.txt",
+      "source_location": "line 40",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "check_err_cortex_m_rtic",
+      "label": "Dependency: cortex-m-rtic v1.1.4",
+      "file_type": "document",
+      "source_file": "check_err.txt",
+      "source_location": "line 39",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "check_err_panic_halt",
+      "label": "Dependency: panic-halt v0.2.0",
+      "file_type": "document",
+      "source_file": "check_err.txt",
+      "source_location": "line 25",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_project",
+      "label": "EEG Drowsiness Detection Project",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "line 1-2",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_uart",
+      "label": "uart.rs: Shared UART+DMA Module",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "line 66",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_hc05",
+      "label": "hc05.rs: HC-05 Bluetooth SPP Wrapper",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "line 67",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_i2c",
+      "label": "i2c.rs: Shared I2C3 Driver",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "line 68",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_touch",
+      "label": "touch.rs: STMPE811 Touch Controller",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "line 69",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_deadman",
+      "label": "deadman.rs: Dead Man's Switch Policy",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "line 70",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_eeg_sensor",
+      "label": "eeg_sensor.rs: EEG Alpha/Beta Parser",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "line 71",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_speed_sensor",
+      "label": "speed_sensor.rs: Speed via HC-05",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "line 72",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_main",
+      "label": "main.rs: Drowsiness Orchestrator",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "line 73",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_logger",
+      "label": "logger.rs: RTT LogWriter",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "line 74",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_persistence_window",
+      "label": "Adaptive Persistence Window T(v)",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "line 59",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_deadman_rationale",
+      "label": "Dead Man's Switch Rationale: Power vs Vigilance",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "line 78-82",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_reader_py",
+      "label": "reader.py: Simulated Sensor Data Streamer",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "line 90-91",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_stm32f429",
+      "label": "STM32F429 Target Platform",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "line 2",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_eegdata_struct",
+      "label": "EegData { alpha, beta }",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "line 44",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_powermode",
+      "label": "PowerMode Enum",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "line 57",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "report_graph",
+      "label": "Graph Report: 29 Nodes, 23 Edges, 6 Communities",
+      "file_type": "document",
+      "source_file": "graphify-out/GRAPH_REPORT.md",
+      "source_location": "line 7-8",
+      "source_url": null,
+      "captured_at": "2026-04-11",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "report_knowledge_gaps",
+      "label": "Knowledge Gaps: 4 Isolated Nodes",
+      "file_type": "document",
+      "source_file": "graphify-out/GRAPH_REPORT.md",
+      "source_location": "line 49-53",
+      "source_url": null,
+      "captured_at": "2026-04-11",
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "readme_eeg_sensor",
+      "target": "readme_uart",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "line 15",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_speed_sensor",
+      "target": "readme_hc05",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "line 16",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_hc05",
+      "target": "readme_uart",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "line 17",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_touch",
+      "target": "readme_i2c",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "line 18",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_eeg_sensor",
+      "target": "readme_main",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "line 20",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_speed_sensor",
+      "target": "readme_main",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "line 21",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_deadman",
+      "target": "readme_main",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "line 22",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_deadman",
+      "target": "readme_touch",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "line 23",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_main",
+      "target": "readme_logger",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "line 24",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_eeg_sensor",
+      "target": "readme_eegdata_struct",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "line 44,71",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_deadman",
+      "target": "readme_powermode",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "line 57",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_main",
+      "target": "readme_persistence_window",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "line 59,73",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_deadman_rationale",
+      "target": "readme_deadman",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "line 78-82",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_project",
+      "target": "readme_stm32f429",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "line 2",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_project",
+      "target": "check_err_cortex_m_rtic",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "line 2",
+      "weight": 0.8
+    },
+    {
+      "source": "check_compile_error",
+      "target": "readme_main",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "check.txt",
+      "source_location": "line 3",
+      "weight": 1.0
+    },
+    {
+      "source": "check_err_unused_import_touchscreen",
+      "target": "readme_deadman",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "check_err.txt",
+      "source_location": "line 43-45",
+      "weight": 1.0
+    },
+    {
+      "source": "check_err_unused_import_touchscreen",
+      "target": "readme_touch",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "check_err.txt",
+      "source_location": "line 45",
+      "weight": 0.8
+    },
+    {
+      "source": "check_err_dead_code_read_reg",
+      "target": "readme_i2c",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "check_err.txt",
+      "source_location": "line 51",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_reader_py",
+      "target": "readme_eeg_sensor",
+      "relation": "shares_data_with",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "README.md",
+      "source_location": "line 90-95",
+      "weight": 0.8
+    },
+    {
+      "source": "readme_reader_py",
+      "target": "readme_speed_sensor",
+      "relation": "shares_data_with",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "README.md",
+      "source_location": "line 90-95",
+      "weight": 0.8
+    },
+    {
+      "source": "report_graph",
+      "target": "readme_project",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.9,
+      "source_file": "graphify-out/GRAPH_REPORT.md",
+      "source_location": "line 1",
+      "weight": 0.7
+    },
+    {
+      "source": "report_knowledge_gaps",
+      "target": "readme_eegdata_struct",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "graphify-out/GRAPH_REPORT.md",
+      "source_location": "line 50",
+      "weight": 0.8
+    },
+    {
+      "source": "readme_persistence_window",
+      "target": "readme_deadman",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "README.md",
+      "source_location": "line 59-60,73",
+      "weight": 0.7
+    },
+    {
+      "source": "check_compile_error",
+      "target": "check_err_unused_import_touchscreen",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.65,
+      "source_file": "check.txt",
+      "source_location": null,
+      "weight": 0.5
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "sensor_data_pipeline",
+      "label": "Sensor Data Pipeline: EEG + Speed to Main via UART",
+      "nodes": ["readme_eeg_sensor", "readme_speed_sensor", "readme_uart", "readme_hc05", "readme_main"],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md"
+    },
+    {
+      "id": "deadman_touch_power_policy",
+      "label": "Dead Man's Switch: Touch + I2C + Power Mode + Clock Scaling",
+      "nodes": ["readme_deadman", "readme_touch", "readme_i2c", "readme_powermode"],
+      "relation": "implement",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md"
+    },
+    {
+      "id": "build_diagnostics",
+      "label": "Build Diagnostics: Compile Error + Warnings",
+      "nodes": ["check_compile_error", "check_err_unused_import_touchscreen", "check_err_dead_code_read_reg"],
+      "relation": "form",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "check.txt"
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

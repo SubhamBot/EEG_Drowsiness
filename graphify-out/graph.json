@@ -1,0 +1,518 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "label": "build.rs",
+      "file_type": "code",
+      "source_file": "build.rs",
+      "source_location": "L1",
+      "id": "build",
+      "community": 5
+    },
+    {
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "build.rs",
+      "source_location": "L6",
+      "id": "build_main",
+      "community": 5
+    },
+    {
+      "label": "reader.py",
+      "file_type": "code",
+      "source_file": "reader.py",
+      "source_location": "L1",
+      "id": "reader",
+      "community": 3
+    },
+    {
+      "label": "on_press()",
+      "file_type": "code",
+      "source_file": "reader.py",
+      "source_location": "L29",
+      "id": "reader_on_press",
+      "community": 3
+    },
+    {
+      "label": "stream_data()",
+      "file_type": "code",
+      "source_file": "reader.py",
+      "source_location": "L50",
+      "id": "reader_stream_data",
+      "community": 3
+    },
+    {
+      "label": "eeg_sensor.rs",
+      "file_type": "code",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L1",
+      "id": "eeg_sensor",
+      "community": 1
+    },
+    {
+      "label": "EegSensor",
+      "file_type": "code",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L4",
+      "id": "eeg_sensor_eegsensor",
+      "community": 1
+    },
+    {
+      "label": "EegData",
+      "file_type": "code",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L6",
+      "id": "eeg_sensor_eegdata",
+      "community": 1
+    },
+    {
+      "label": ".new()",
+      "file_type": "code",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L12",
+      "id": "eeg_sensor_eegsensor_new",
+      "community": 1
+    },
+    {
+      "label": ".parse_packet()",
+      "file_type": "code",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L19",
+      "id": "eeg_sensor_eegsensor_parse_packet",
+      "community": 1
+    },
+    {
+      "label": ".log()",
+      "file_type": "code",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L29",
+      "id": "eeg_sensor_eegsensor_log",
+      "community": 1
+    },
+    {
+      "label": "logger.rs",
+      "file_type": "code",
+      "source_file": "src\\logger.rs",
+      "source_location": "L1",
+      "id": "logger",
+      "community": 0
+    },
+    {
+      "label": "LogWriter",
+      "file_type": "code",
+      "source_file": "src\\logger.rs",
+      "source_location": "L11",
+      "id": "logger_logwriter",
+      "community": 0
+    },
+    {
+      "label": "LogWriter<'a>",
+      "file_type": "code",
+      "source_file": "src\\logger.rs",
+      "source_location": "L15",
+      "id": "logger_logwriter_a",
+      "community": 4
+    },
+    {
+      "label": ".new()",
+      "file_type": "code",
+      "source_file": "src\\logger.rs",
+      "source_location": "L16",
+      "id": "logger_logwriter_a_new",
+      "community": 4
+    },
+    {
+      "label": ".write_str()",
+      "file_type": "code",
+      "source_file": "src\\logger.rs",
+      "source_location": "L22",
+      "id": "logger_logwriter_a_write_str",
+      "community": 4
+    },
+    {
+      "label": "main.rs",
+      "file_type": "code",
+      "source_file": "src\\main.rs",
+      "source_location": "L1",
+      "id": "main",
+      "community": 0
+    },
+    {
+      "label": "Shared",
+      "file_type": "code",
+      "source_file": "src\\main.rs",
+      "source_location": "L62",
+      "id": "main_shared",
+      "community": 0
+    },
+    {
+      "label": "Local",
+      "file_type": "code",
+      "source_file": "src\\main.rs",
+      "source_location": "L69",
+      "id": "main_local",
+      "community": 0
+    },
+    {
+      "label": "init()",
+      "file_type": "code",
+      "source_file": "src\\main.rs",
+      "source_location": "L87",
+      "id": "main_init",
+      "community": 0
+    },
+    {
+      "label": "uart_idle()",
+      "file_type": "code",
+      "source_file": "src\\main.rs",
+      "source_location": "L266",
+      "id": "main_uart_idle",
+      "community": 0
+    },
+    {
+      "label": "process_logic()",
+      "file_type": "code",
+      "source_file": "src\\main.rs",
+      "source_location": "L329",
+      "id": "main_process_logic",
+      "community": 0
+    },
+    {
+      "label": "dma_tx_done()",
+      "file_type": "code",
+      "source_file": "src\\main.rs",
+      "source_location": "L390",
+      "id": "main_dma_tx_done",
+      "community": 0
+    },
+    {
+      "label": "flush_log()",
+      "file_type": "code",
+      "source_file": "src\\main.rs",
+      "source_location": "L421",
+      "id": "main_flush_log",
+      "community": 0
+    },
+    {
+      "label": "speed_sensor.rs",
+      "file_type": "code",
+      "source_file": "src\\speed_sensor.rs",
+      "source_location": "L1",
+      "id": "speed_sensor",
+      "community": 2
+    },
+    {
+      "label": "SpeedSensor",
+      "file_type": "code",
+      "source_file": "src\\speed_sensor.rs",
+      "source_location": "L4",
+      "id": "speed_sensor_speedsensor",
+      "community": 2
+    },
+    {
+      "label": ".new()",
+      "file_type": "code",
+      "source_file": "src\\speed_sensor.rs",
+      "source_location": "L7",
+      "id": "speed_sensor_speedsensor_new",
+      "community": 2
+    },
+    {
+      "label": ".parse_packet()",
+      "file_type": "code",
+      "source_file": "src\\speed_sensor.rs",
+      "source_location": "L13",
+      "id": "speed_sensor_speedsensor_parse_packet",
+      "community": 2
+    },
+    {
+      "label": ".log()",
+      "file_type": "code",
+      "source_file": "src\\speed_sensor.rs",
+      "source_location": "L19",
+      "id": "speed_sensor_speedsensor_log",
+      "community": 2
+    }
+  ],
+  "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "build.rs",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_src": "build",
+      "_tgt": "build_main",
+      "source": "build",
+      "target": "build_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reader.py",
+      "source_location": "L29",
+      "weight": 1.0,
+      "_src": "reader",
+      "_tgt": "reader_on_press",
+      "source": "reader",
+      "target": "reader_on_press",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reader.py",
+      "source_location": "L50",
+      "weight": 1.0,
+      "_src": "reader",
+      "_tgt": "reader_stream_data",
+      "source": "reader",
+      "target": "reader_stream_data",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_src": "eeg_sensor",
+      "_tgt": "eeg_sensor_eegsensor",
+      "source": "eeg_sensor",
+      "target": "eeg_sensor_eegsensor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_src": "eeg_sensor",
+      "_tgt": "eeg_sensor_eegdata",
+      "source": "eeg_sensor",
+      "target": "eeg_sensor_eegdata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_src": "eeg_sensor_eegsensor",
+      "_tgt": "eeg_sensor_eegsensor_new",
+      "source": "eeg_sensor_eegsensor",
+      "target": "eeg_sensor_eegsensor_new",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_src": "eeg_sensor_eegsensor",
+      "_tgt": "eeg_sensor_eegsensor_parse_packet",
+      "source": "eeg_sensor_eegsensor",
+      "target": "eeg_sensor_eegsensor_parse_packet",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L29",
+      "weight": 1.0,
+      "_src": "eeg_sensor_eegsensor",
+      "_tgt": "eeg_sensor_eegsensor_log",
+      "source": "eeg_sensor_eegsensor",
+      "target": "eeg_sensor_eegsensor_log",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\logger.rs",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_src": "logger",
+      "_tgt": "logger_logwriter",
+      "source": "logger",
+      "target": "logger_logwriter",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L35",
+      "weight": 1.0,
+      "_src": "main",
+      "_tgt": "logger",
+      "source": "logger",
+      "target": "main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\logger.rs",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_src": "logger_logwriter_a",
+      "_tgt": "logger_logwriter_a_new",
+      "source": "logger_logwriter_a",
+      "target": "logger_logwriter_a_new",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\logger.rs",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_src": "logger_logwriter_a",
+      "_tgt": "logger_logwriter_a_write_str",
+      "source": "logger_logwriter_a",
+      "target": "logger_logwriter_a_write_str",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L62",
+      "weight": 1.0,
+      "_src": "main",
+      "_tgt": "main_shared",
+      "source": "main",
+      "target": "main_shared",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L69",
+      "weight": 1.0,
+      "_src": "main",
+      "_tgt": "main_local",
+      "source": "main",
+      "target": "main_local",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L87",
+      "weight": 1.0,
+      "_src": "main",
+      "_tgt": "main_init",
+      "source": "main",
+      "target": "main_init",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L266",
+      "weight": 1.0,
+      "_src": "main",
+      "_tgt": "main_uart_idle",
+      "source": "main",
+      "target": "main_uart_idle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L329",
+      "weight": 1.0,
+      "_src": "main",
+      "_tgt": "main_process_logic",
+      "source": "main",
+      "target": "main_process_logic",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L390",
+      "weight": 1.0,
+      "_src": "main",
+      "_tgt": "main_dma_tx_done",
+      "source": "main",
+      "target": "main_dma_tx_done",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L421",
+      "weight": 1.0,
+      "_src": "main",
+      "_tgt": "main_flush_log",
+      "source": "main",
+      "target": "main_flush_log",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\speed_sensor.rs",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_src": "speed_sensor",
+      "_tgt": "speed_sensor_speedsensor",
+      "source": "speed_sensor",
+      "target": "speed_sensor_speedsensor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\speed_sensor.rs",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_src": "speed_sensor_speedsensor",
+      "_tgt": "speed_sensor_speedsensor_new",
+      "source": "speed_sensor_speedsensor",
+      "target": "speed_sensor_speedsensor_new",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\speed_sensor.rs",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_src": "speed_sensor_speedsensor",
+      "_tgt": "speed_sensor_speedsensor_parse_packet",
+      "source": "speed_sensor_speedsensor",
+      "target": "speed_sensor_speedsensor_parse_packet",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\speed_sensor.rs",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_src": "speed_sensor_speedsensor",
+      "_tgt": "speed_sensor_speedsensor_log",
+      "source": "speed_sensor_speedsensor",
+      "target": "speed_sensor_speedsensor_log",
+      "confidence_score": 1.0
+    }
+  ],
+  "hyperedges": []
+}

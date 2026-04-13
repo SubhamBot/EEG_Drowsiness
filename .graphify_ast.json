@@ -1,0 +1,1910 @@
+{
+  "nodes": [
+    {
+      "id": "build",
+      "label": "build.rs",
+      "file_type": "code",
+      "source_file": "build.rs",
+      "source_location": "L1"
+    },
+    {
+      "id": "build_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "build.rs",
+      "source_location": "L6"
+    },
+    {
+      "id": "reader",
+      "label": "reader.py",
+      "file_type": "code",
+      "source_file": "reader.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "reader_on_press",
+      "label": "on_press()",
+      "file_type": "code",
+      "source_file": "reader.py",
+      "source_location": "L50"
+    },
+    {
+      "id": "reader_stream_data",
+      "label": "stream_data()",
+      "file_type": "code",
+      "source_file": "reader.py",
+      "source_location": "L69"
+    },
+    {
+      "id": "deadman",
+      "label": "deadman.rs",
+      "file_type": "code",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L1"
+    },
+    {
+      "id": "deadman_deadmanstate",
+      "label": "DeadmanState",
+      "file_type": "code",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L13"
+    },
+    {
+      "id": "deadman_powermode",
+      "label": "PowerMode",
+      "file_type": "code",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L22"
+    },
+    {
+      "id": "deadman_deadmanswitch",
+      "label": "DeadmanSwitch",
+      "file_type": "code",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L43"
+    },
+    {
+      "id": "deadman_deadmanswitch_new",
+      "label": ".new()",
+      "file_type": "code",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L54"
+    },
+    {
+      "id": "deadman_deadmanswitch_state",
+      "label": ".state()",
+      "file_type": "code",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L62"
+    },
+    {
+      "id": "deadman_deadmanswitch_power_mode",
+      "label": ".power_mode()",
+      "file_type": "code",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L66"
+    },
+    {
+      "id": "deadman_deadmanswitch_sampling_ms",
+      "label": ".sampling_ms()",
+      "file_type": "code",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L73"
+    },
+    {
+      "id": "deadman_deadmanswitch_clock_mhz",
+      "label": ".clock_mhz()",
+      "file_type": "code",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L80"
+    },
+    {
+      "id": "deadman_deadmanswitch_state_label",
+      "label": ".state_label()",
+      "file_type": "code",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L87"
+    },
+    {
+      "id": "deadman_deadmanswitch_on_touch_interrupt",
+      "label": ".on_touch_interrupt()",
+      "file_type": "code",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L104"
+    },
+    {
+      "id": "deadman_deadmanswitch_on_touch_event",
+      "label": ".on_touch_event()",
+      "file_type": "code",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L111"
+    },
+    {
+      "id": "deadman_deadmanswitch_on_grace_timeout",
+      "label": ".on_grace_timeout()",
+      "file_type": "code",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L136"
+    },
+    {
+      "id": "deadman_deadmanswitch_on_user_button",
+      "label": ".on_user_button()",
+      "file_type": "code",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L144"
+    },
+    {
+      "id": "deadman_deadmanswitch_transition",
+      "label": ".transition()",
+      "file_type": "code",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L161"
+    },
+    {
+      "id": "deadman_deadmanswitch_init_grace_timer",
+      "label": ".init_grace_timer()",
+      "file_type": "code",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L172"
+    },
+    {
+      "id": "deadman_deadmanswitch_start_grace_timer",
+      "label": ".start_grace_timer()",
+      "file_type": "code",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L183"
+    },
+    {
+      "id": "deadman_deadmanswitch_stop_grace_timer",
+      "label": ".stop_grace_timer()",
+      "file_type": "code",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L197"
+    },
+    {
+      "id": "deadman_deadmanswitch_apply_clock",
+      "label": ".apply_clock()",
+      "file_type": "code",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L205"
+    },
+    {
+      "id": "deadman_deadmanswitch_set_baud_usart1",
+      "label": ".set_baud_usart1()",
+      "file_type": "code",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L274"
+    },
+    {
+      "id": "deadman_deadmanswitch_set_baud_usart2",
+      "label": ".set_baud_usart2()",
+      "file_type": "code",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L283"
+    },
+    {
+      "id": "eeg_sensor",
+      "label": "eeg_sensor.rs",
+      "file_type": "code",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L1"
+    },
+    {
+      "id": "eeg_sensor_eegdata",
+      "label": "EegData",
+      "file_type": "code",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L3"
+    },
+    {
+      "id": "eeg_sensor_eegsensor",
+      "label": "EegSensor",
+      "file_type": "code",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L8"
+    },
+    {
+      "id": "eeg_sensor_eegsensor_new",
+      "label": ".new()",
+      "file_type": "code",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L13"
+    },
+    {
+      "id": "eeg_sensor_eegsensor_init_dma",
+      "label": ".init_dma()",
+      "file_type": "code",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L20"
+    },
+    {
+      "id": "eeg_sensor_eegsensor_on_idle",
+      "label": ".on_idle()",
+      "file_type": "code",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L26"
+    },
+    {
+      "id": "eeg_sensor_eegsensor_parse",
+      "label": ".parse()",
+      "file_type": "code",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L36"
+    },
+    {
+      "id": "hc05",
+      "label": "hc05.rs",
+      "file_type": "code",
+      "source_file": "src\\hc05.rs",
+      "source_location": "L1"
+    },
+    {
+      "id": "hc05_hc05",
+      "label": "Hc05",
+      "file_type": "code",
+      "source_file": "src\\hc05.rs",
+      "source_location": "L13"
+    },
+    {
+      "id": "hc05_hc05_new",
+      "label": ".new()",
+      "file_type": "code",
+      "source_file": "src\\hc05.rs",
+      "source_location": "L18"
+    },
+    {
+      "id": "hc05_hc05_init_dma",
+      "label": ".init_dma()",
+      "file_type": "code",
+      "source_file": "src\\hc05.rs",
+      "source_location": "L25"
+    },
+    {
+      "id": "hc05_hc05_on_idle",
+      "label": ".on_idle()",
+      "file_type": "code",
+      "source_file": "src\\hc05.rs",
+      "source_location": "L31"
+    },
+    {
+      "id": "i2c",
+      "label": "i2c.rs",
+      "file_type": "code",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L1"
+    },
+    {
+      "id": "i2c_i2c3",
+      "label": "I2c3",
+      "file_type": "code",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L13"
+    },
+    {
+      "id": "i2c_i2c3_bus_recovery",
+      "label": ".bus_recovery()",
+      "file_type": "code",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L28"
+    },
+    {
+      "id": "i2c_i2c3_init",
+      "label": ".init()",
+      "file_type": "code",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L65"
+    },
+    {
+      "id": "i2c_i2c3_reconfigure",
+      "label": ".reconfigure()",
+      "file_type": "code",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L105"
+    },
+    {
+      "id": "i2c_i2c3_write_reg",
+      "label": ".write_reg()",
+      "file_type": "code",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L135"
+    },
+    {
+      "id": "i2c_i2c3_read_reg",
+      "label": ".read_reg()",
+      "file_type": "code",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L164"
+    },
+    {
+      "id": "i2c_i2c3_wait_addr",
+      "label": ".wait_addr()",
+      "file_type": "code",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L221"
+    },
+    {
+      "id": "i2c_i2c3_wait_flag",
+      "label": ".wait_flag()",
+      "file_type": "code",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L240"
+    },
+    {
+      "id": "i2c_i2c3_abort",
+      "label": ".abort()",
+      "file_type": "code",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L259"
+    },
+    {
+      "id": "logger",
+      "label": "logger.rs",
+      "file_type": "code",
+      "source_file": "src\\logger.rs",
+      "source_location": "L1"
+    },
+    {
+      "id": "logger_logwriter",
+      "label": "LogWriter",
+      "file_type": "code",
+      "source_file": "src\\logger.rs",
+      "source_location": "L5"
+    },
+    {
+      "id": "logger_logwriter_new",
+      "label": ".new()",
+      "file_type": "code",
+      "source_file": "src\\logger.rs",
+      "source_location": "L8"
+    },
+    {
+      "id": "logger_logwriter_write_str",
+      "label": ".write_str()",
+      "file_type": "code",
+      "source_file": "src\\logger.rs",
+      "source_location": "L14"
+    },
+    {
+      "id": "main",
+      "label": "main.rs",
+      "file_type": "code",
+      "source_file": "src\\main.rs",
+      "source_location": "L1"
+    },
+    {
+      "id": "main_shared",
+      "label": "Shared",
+      "file_type": "code",
+      "source_file": "src\\main.rs",
+      "source_location": "L43"
+    },
+    {
+      "id": "main_local",
+      "label": "Local",
+      "file_type": "code",
+      "source_file": "src\\main.rs",
+      "source_location": "L51"
+    },
+    {
+      "id": "main_init",
+      "label": "init()",
+      "file_type": "code",
+      "source_file": "src\\main.rs",
+      "source_location": "L61"
+    },
+    {
+      "id": "main_usart1_idle",
+      "label": "usart1_idle()",
+      "file_type": "code",
+      "source_file": "src\\main.rs",
+      "source_location": "L173"
+    },
+    {
+      "id": "main_usart2_idle",
+      "label": "usart2_idle()",
+      "file_type": "code",
+      "source_file": "src\\main.rs",
+      "source_location": "L181"
+    },
+    {
+      "id": "main_exti15_touch",
+      "label": "exti15_touch()",
+      "file_type": "code",
+      "source_file": "src\\main.rs",
+      "source_location": "L215"
+    },
+    {
+      "id": "main_handle_touch",
+      "label": "handle_touch()",
+      "file_type": "code",
+      "source_file": "src\\main.rs",
+      "source_location": "L224"
+    },
+    {
+      "id": "main_tim2_grace",
+      "label": "tim2_grace()",
+      "file_type": "code",
+      "source_file": "src\\main.rs",
+      "source_location": "L258"
+    },
+    {
+      "id": "main_exti0_user_button",
+      "label": "exti0_user_button()",
+      "file_type": "code",
+      "source_file": "src\\main.rs",
+      "source_location": "L275"
+    },
+    {
+      "id": "main_update_speed",
+      "label": "update_speed()",
+      "file_type": "code",
+      "source_file": "src\\main.rs",
+      "source_location": "L304"
+    },
+    {
+      "id": "main_drowsiness_check",
+      "label": "drowsiness_check()",
+      "file_type": "code",
+      "source_file": "src\\main.rs",
+      "source_location": "L320"
+    },
+    {
+      "id": "speed_sensor",
+      "label": "speed_sensor.rs",
+      "file_type": "code",
+      "source_file": "src\\speed_sensor.rs",
+      "source_location": "L1"
+    },
+    {
+      "id": "speed_sensor_speedsensor",
+      "label": "SpeedSensor",
+      "file_type": "code",
+      "source_file": "src\\speed_sensor.rs",
+      "source_location": "L3"
+    },
+    {
+      "id": "speed_sensor_speedsensor_new",
+      "label": ".new()",
+      "file_type": "code",
+      "source_file": "src\\speed_sensor.rs",
+      "source_location": "L8"
+    },
+    {
+      "id": "speed_sensor_speedsensor_init_dma",
+      "label": ".init_dma()",
+      "file_type": "code",
+      "source_file": "src\\speed_sensor.rs",
+      "source_location": "L15"
+    },
+    {
+      "id": "speed_sensor_speedsensor_on_idle",
+      "label": ".on_idle()",
+      "file_type": "code",
+      "source_file": "src\\speed_sensor.rs",
+      "source_location": "L21"
+    },
+    {
+      "id": "speed_sensor_speedsensor_parse",
+      "label": ".parse()",
+      "file_type": "code",
+      "source_file": "src\\speed_sensor.rs",
+      "source_location": "L30"
+    },
+    {
+      "id": "touch",
+      "label": "touch.rs",
+      "file_type": "code",
+      "source_file": "src\\touch.rs",
+      "source_location": "L1"
+    },
+    {
+      "id": "touch_touchscreen",
+      "label": "TouchScreen",
+      "file_type": "code",
+      "source_file": "src\\touch.rs",
+      "source_location": "L24"
+    },
+    {
+      "id": "touch_touchscreen_init",
+      "label": ".init()",
+      "file_type": "code",
+      "source_file": "src\\touch.rs",
+      "source_location": "L29"
+    },
+    {
+      "id": "touch_touchscreen_is_touched",
+      "label": ".is_touched()",
+      "file_type": "code",
+      "source_file": "src\\touch.rs",
+      "source_location": "L80"
+    },
+    {
+      "id": "touch_touchscreen_clear_interrupt",
+      "label": ".clear_interrupt()",
+      "file_type": "code",
+      "source_file": "src\\touch.rs",
+      "source_location": "L90"
+    },
+    {
+      "id": "touch_touchscreen_init_exti",
+      "label": ".init_exti()",
+      "file_type": "code",
+      "source_file": "src\\touch.rs",
+      "source_location": "L98"
+    },
+    {
+      "id": "touch_touchscreen_clear_exti_pending",
+      "label": ".clear_exti_pending()",
+      "file_type": "code",
+      "source_file": "src\\touch.rs",
+      "source_location": "L122"
+    },
+    {
+      "id": "touch_touchscreen_chip_id",
+      "label": ".chip_id()",
+      "file_type": "code",
+      "source_file": "src\\touch.rs",
+      "source_location": "L129"
+    },
+    {
+      "id": "touch_touchscreen_init_verified",
+      "label": ".init_verified()",
+      "file_type": "code",
+      "source_file": "src\\touch.rs",
+      "source_location": "L138"
+    },
+    {
+      "id": "touch_userbutton",
+      "label": "UserButton",
+      "file_type": "code",
+      "source_file": "src\\touch.rs",
+      "source_location": "L160"
+    },
+    {
+      "id": "touch_userbutton_init_exti",
+      "label": ".init_exti()",
+      "file_type": "code",
+      "source_file": "src\\touch.rs",
+      "source_location": "L164"
+    },
+    {
+      "id": "touch_userbutton_clear_exti_pending",
+      "label": ".clear_exti_pending()",
+      "file_type": "code",
+      "source_file": "src\\touch.rs",
+      "source_location": "L181"
+    },
+    {
+      "id": "uart",
+      "label": "uart.rs",
+      "file_type": "code",
+      "source_file": "src\\uart.rs",
+      "source_location": "L1"
+    },
+    {
+      "id": "uart_uartport",
+      "label": "UartPort",
+      "file_type": "code",
+      "source_file": "src\\uart.rs",
+      "source_location": "L4"
+    },
+    {
+      "id": "uart_uartdma",
+      "label": "UartDma",
+      "file_type": "code",
+      "source_file": "src\\uart.rs",
+      "source_location": "L16"
+    },
+    {
+      "id": "uart_uartdma_new",
+      "label": ".new()",
+      "file_type": "code",
+      "source_file": "src\\uart.rs",
+      "source_location": "L23"
+    },
+    {
+      "id": "uart_uartdma_init_dma",
+      "label": ".init_dma()",
+      "file_type": "code",
+      "source_file": "src\\uart.rs",
+      "source_location": "L32"
+    },
+    {
+      "id": "uart_uartdma_on_idle",
+      "label": ".on_idle()",
+      "file_type": "code",
+      "source_file": "src\\uart.rs",
+      "source_location": "L42"
+    },
+    {
+      "id": "uart_uartdma_init_usart1",
+      "label": ".init_usart1()",
+      "file_type": "code",
+      "source_file": "src\\uart.rs",
+      "source_location": "L56"
+    },
+    {
+      "id": "uart_uartdma_handle_idle_usart1",
+      "label": ".handle_idle_usart1()",
+      "file_type": "code",
+      "source_file": "src\\uart.rs",
+      "source_location": "L102"
+    },
+    {
+      "id": "uart_uartdma_init_usart2",
+      "label": ".init_usart2()",
+      "file_type": "code",
+      "source_file": "src\\uart.rs",
+      "source_location": "L121"
+    },
+    {
+      "id": "uart_uartdma_handle_idle_usart2",
+      "label": ".handle_idle_usart2()",
+      "file_type": "code",
+      "source_file": "src\\uart.rs",
+      "source_location": "L167"
+    },
+    {
+      "id": "uart_uartdma_extract_lines",
+      "label": ".extract_lines()",
+      "file_type": "code",
+      "source_file": "src\\uart.rs",
+      "source_location": "L186"
+    }
+  ],
+  "edges": [
+    {
+      "source": "build",
+      "target": "env",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "build.rs",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "build",
+      "target": "file",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "build.rs",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "build",
+      "target": "write",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "build.rs",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "build",
+      "target": "pathbuf",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "build.rs",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "build",
+      "target": "build_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "build.rs",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "reader",
+      "target": "pandas",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "reader.py",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "reader",
+      "target": "serial",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "reader.py",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "reader",
+      "target": "time",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "reader.py",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "reader",
+      "target": "threading",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "reader.py",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "reader",
+      "target": "pynput",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "reader.py",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "reader",
+      "target": "reader_on_press",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reader.py",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "reader",
+      "target": "reader_stream_data",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reader.py",
+      "source_location": "L69",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman",
+      "target": "touchscreen",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman",
+      "target": "pac",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman",
+      "target": "deadman_deadmanstate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman",
+      "target": "deadman_powermode",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L22",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman",
+      "target": "deadman_deadmanswitch",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L43",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch",
+      "target": "deadman_deadmanswitch_new",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L54",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch",
+      "target": "deadman_deadmanswitch_state",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L62",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch",
+      "target": "deadman_deadmanswitch_power_mode",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L66",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch",
+      "target": "deadman_deadmanswitch_sampling_ms",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L73",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch",
+      "target": "deadman_deadmanswitch_clock_mhz",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L80",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch",
+      "target": "deadman_deadmanswitch_state_label",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L87",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch",
+      "target": "deadman_deadmanswitch_on_touch_interrupt",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L104",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch",
+      "target": "deadman_deadmanswitch_on_touch_event",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L111",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch",
+      "target": "deadman_deadmanswitch_on_grace_timeout",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L136",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch",
+      "target": "deadman_deadmanswitch_on_user_button",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L144",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch",
+      "target": "deadman_deadmanswitch_transition",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L161",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch",
+      "target": "deadman_deadmanswitch_init_grace_timer",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L172",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch",
+      "target": "deadman_deadmanswitch_start_grace_timer",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L183",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch",
+      "target": "deadman_deadmanswitch_stop_grace_timer",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L197",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch",
+      "target": "deadman_deadmanswitch_apply_clock",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L205",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch",
+      "target": "deadman_deadmanswitch_set_baud_usart1",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L274",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch",
+      "target": "deadman_deadmanswitch_set_baud_usart2",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L283",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch_sampling_ms",
+      "target": "deadman_deadmanswitch_power_mode",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L74",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch_clock_mhz",
+      "target": "deadman_deadmanswitch_power_mode",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L81",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch_on_touch_interrupt",
+      "target": "deadman_deadmanswitch_on_touch_event",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L107",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch_on_touch_event",
+      "target": "deadman_deadmanswitch_stop_grace_timer",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L117",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch_on_touch_event",
+      "target": "deadman_deadmanswitch_transition",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L121",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch_on_touch_event",
+      "target": "deadman_deadmanswitch_start_grace_timer",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L125",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch_on_grace_timeout",
+      "target": "deadman_deadmanswitch_transition",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L138",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch_on_user_button",
+      "target": "deadman_deadmanswitch_stop_grace_timer",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L151",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch_on_user_button",
+      "target": "deadman_deadmanswitch_transition",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L153",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch_transition",
+      "target": "deadman_deadmanswitch_power_mode",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L162",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch_transition",
+      "target": "deadman_deadmanswitch_apply_clock",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L166",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch_apply_clock",
+      "target": "deadman_deadmanswitch_set_baud_usart1",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L264",
+      "weight": 1.0
+    },
+    {
+      "source": "deadman_deadmanswitch_apply_clock",
+      "target": "deadman_deadmanswitch_set_baud_usart2",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\deadman.rs",
+      "source_location": "L265",
+      "weight": 1.0
+    },
+    {
+      "source": "eeg_sensor",
+      "target": "uart",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "eeg_sensor",
+      "target": "eeg_sensor_eegdata",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "eeg_sensor",
+      "target": "eeg_sensor_eegsensor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "eeg_sensor_eegsensor",
+      "target": "eeg_sensor_eegsensor_new",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "eeg_sensor_eegsensor",
+      "target": "eeg_sensor_eegsensor_init_dma",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "eeg_sensor_eegsensor",
+      "target": "eeg_sensor_eegsensor_on_idle",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "eeg_sensor_eegsensor",
+      "target": "eeg_sensor_eegsensor_parse",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L36",
+      "weight": 1.0
+    },
+    {
+      "source": "eeg_sensor_eegsensor_on_idle",
+      "target": "eeg_sensor_eegsensor_parse",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\eeg_sensor.rs",
+      "source_location": "L28",
+      "weight": 1.0
+    },
+    {
+      "source": "hc05",
+      "target": "uart",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\hc05.rs",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "hc05",
+      "target": "hc05_hc05",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\hc05.rs",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "hc05_hc05",
+      "target": "hc05_hc05_new",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\hc05.rs",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "hc05_hc05",
+      "target": "hc05_hc05_init_dma",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\hc05.rs",
+      "source_location": "L25",
+      "weight": 1.0
+    },
+    {
+      "source": "hc05_hc05",
+      "target": "hc05_hc05_on_idle",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\hc05.rs",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "i2c",
+      "target": "pac",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "i2c",
+      "target": "i2c_i2c3",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "i2c_i2c3",
+      "target": "i2c_i2c3_bus_recovery",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L28",
+      "weight": 1.0
+    },
+    {
+      "source": "i2c_i2c3",
+      "target": "i2c_i2c3_init",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L65",
+      "weight": 1.0
+    },
+    {
+      "source": "i2c_i2c3",
+      "target": "i2c_i2c3_reconfigure",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L105",
+      "weight": 1.0
+    },
+    {
+      "source": "i2c_i2c3",
+      "target": "i2c_i2c3_write_reg",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L135",
+      "weight": 1.0
+    },
+    {
+      "source": "i2c_i2c3",
+      "target": "i2c_i2c3_read_reg",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L164",
+      "weight": 1.0
+    },
+    {
+      "source": "i2c_i2c3",
+      "target": "i2c_i2c3_wait_addr",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L221",
+      "weight": 1.0
+    },
+    {
+      "source": "i2c_i2c3",
+      "target": "i2c_i2c3_wait_flag",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L240",
+      "weight": 1.0
+    },
+    {
+      "source": "i2c_i2c3",
+      "target": "i2c_i2c3_abort",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L259",
+      "weight": 1.0
+    },
+    {
+      "source": "i2c_i2c3_write_reg",
+      "target": "i2c_i2c3_wait_flag",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L139",
+      "weight": 1.0
+    },
+    {
+      "source": "i2c_i2c3_write_reg",
+      "target": "i2c_i2c3_abort",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L140",
+      "weight": 1.0
+    },
+    {
+      "source": "i2c_i2c3_write_reg",
+      "target": "i2c_i2c3_wait_addr",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L144",
+      "weight": 1.0
+    },
+    {
+      "source": "i2c_i2c3_read_reg",
+      "target": "i2c_i2c3_wait_flag",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L169",
+      "weight": 1.0
+    },
+    {
+      "source": "i2c_i2c3_read_reg",
+      "target": "i2c_i2c3_abort",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L170",
+      "weight": 1.0
+    },
+    {
+      "source": "i2c_i2c3_read_reg",
+      "target": "i2c_i2c3_wait_addr",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\i2c.rs",
+      "source_location": "L176",
+      "weight": 1.0
+    },
+    {
+      "source": "logger",
+      "target": "fmt",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\logger.rs",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "logger",
+      "target": "logger_logwriter",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\logger.rs",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "logger_logwriter",
+      "target": "logger_logwriter_new",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\logger.rs",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "logger_logwriter",
+      "target": "logger_logwriter_write_str",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\logger.rs",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
+      "target": "panic_halt_as",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
+      "target": "deadman",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
+      "target": "eeg_sensor",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
+      "target": "i2c3",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
+      "target": "logwriter",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
+      "target": "speedsensor",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L22",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
+      "target": "touch",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
+      "target": "write",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L24",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
+      "target": "stm32f4xx_hal",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L25",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
+      "target": "main_shared",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L43",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
+      "target": "main_local",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L51",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
+      "target": "main_init",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L61",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
+      "target": "main_usart1_idle",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L173",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
+      "target": "main_usart2_idle",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L181",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
+      "target": "main_exti15_touch",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L215",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
+      "target": "main_handle_touch",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L224",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
+      "target": "main_tim2_grace",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L258",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
+      "target": "main_exti0_user_button",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L275",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
+      "target": "main_update_speed",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L304",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
+      "target": "main_drowsiness_check",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\main.rs",
+      "source_location": "L320",
+      "weight": 1.0
+    },
+    {
+      "source": "speed_sensor",
+      "target": "hc05",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\speed_sensor.rs",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "speed_sensor",
+      "target": "speed_sensor_speedsensor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\speed_sensor.rs",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "speed_sensor_speedsensor",
+      "target": "speed_sensor_speedsensor_new",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\speed_sensor.rs",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "speed_sensor_speedsensor",
+      "target": "speed_sensor_speedsensor_init_dma",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\speed_sensor.rs",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "speed_sensor_speedsensor",
+      "target": "speed_sensor_speedsensor_on_idle",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\speed_sensor.rs",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "speed_sensor_speedsensor",
+      "target": "speed_sensor_speedsensor_parse",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\speed_sensor.rs",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "speed_sensor_speedsensor_on_idle",
+      "target": "speed_sensor_speedsensor_parse",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\speed_sensor.rs",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "touch",
+      "target": "i2c3",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\touch.rs",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "touch",
+      "target": "pac",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\touch.rs",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "touch",
+      "target": "touch_touchscreen",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\touch.rs",
+      "source_location": "L24",
+      "weight": 1.0
+    },
+    {
+      "source": "touch_touchscreen",
+      "target": "touch_touchscreen_init",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\touch.rs",
+      "source_location": "L29",
+      "weight": 1.0
+    },
+    {
+      "source": "touch_touchscreen",
+      "target": "touch_touchscreen_is_touched",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\touch.rs",
+      "source_location": "L80",
+      "weight": 1.0
+    },
+    {
+      "source": "touch_touchscreen",
+      "target": "touch_touchscreen_clear_interrupt",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\touch.rs",
+      "source_location": "L90",
+      "weight": 1.0
+    },
+    {
+      "source": "touch_touchscreen",
+      "target": "touch_touchscreen_init_exti",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\touch.rs",
+      "source_location": "L98",
+      "weight": 1.0
+    },
+    {
+      "source": "touch_touchscreen",
+      "target": "touch_touchscreen_clear_exti_pending",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\touch.rs",
+      "source_location": "L122",
+      "weight": 1.0
+    },
+    {
+      "source": "touch_touchscreen",
+      "target": "touch_touchscreen_chip_id",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\touch.rs",
+      "source_location": "L129",
+      "weight": 1.0
+    },
+    {
+      "source": "touch_touchscreen",
+      "target": "touch_touchscreen_init_verified",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\touch.rs",
+      "source_location": "L138",
+      "weight": 1.0
+    },
+    {
+      "source": "touch",
+      "target": "touch_userbutton",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\touch.rs",
+      "source_location": "L160",
+      "weight": 1.0
+    },
+    {
+      "source": "touch_userbutton",
+      "target": "touch_userbutton_init_exti",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\touch.rs",
+      "source_location": "L164",
+      "weight": 1.0
+    },
+    {
+      "source": "touch_userbutton",
+      "target": "touch_userbutton_clear_exti_pending",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\touch.rs",
+      "source_location": "L181",
+      "weight": 1.0
+    },
+    {
+      "source": "touch_touchscreen_init_verified",
+      "target": "touch_touchscreen_init",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\touch.rs",
+      "source_location": "L144",
+      "weight": 1.0
+    },
+    {
+      "source": "touch_touchscreen_init_verified",
+      "target": "touch_touchscreen_chip_id",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\touch.rs",
+      "source_location": "L148",
+      "weight": 1.0
+    },
+    {
+      "source": "uart",
+      "target": "pac",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\uart.rs",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "uart",
+      "target": "uart_uartport",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\uart.rs",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "uart",
+      "target": "uart_uartdma",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\uart.rs",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "uart_uartdma",
+      "target": "uart_uartdma_new",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\uart.rs",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "uart_uartdma",
+      "target": "uart_uartdma_init_dma",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\uart.rs",
+      "source_location": "L32",
+      "weight": 1.0
+    },
+    {
+      "source": "uart_uartdma",
+      "target": "uart_uartdma_on_idle",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\uart.rs",
+      "source_location": "L42",
+      "weight": 1.0
+    },
+    {
+      "source": "uart_uartdma",
+      "target": "uart_uartdma_init_usart1",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\uart.rs",
+      "source_location": "L56",
+      "weight": 1.0
+    },
+    {
+      "source": "uart_uartdma",
+      "target": "uart_uartdma_handle_idle_usart1",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\uart.rs",
+      "source_location": "L102",
+      "weight": 1.0
+    },
+    {
+      "source": "uart_uartdma",
+      "target": "uart_uartdma_init_usart2",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\uart.rs",
+      "source_location": "L121",
+      "weight": 1.0
+    },
+    {
+      "source": "uart_uartdma",
+      "target": "uart_uartdma_handle_idle_usart2",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\uart.rs",
+      "source_location": "L167",
+      "weight": 1.0
+    },
+    {
+      "source": "uart_uartdma",
+      "target": "uart_uartdma_extract_lines",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\uart.rs",
+      "source_location": "L186",
+      "weight": 1.0
+    },
+    {
+      "source": "uart_uartdma_init_dma",
+      "target": "uart_uartdma_init_usart1",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\uart.rs",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "uart_uartdma_init_dma",
+      "target": "uart_uartdma_init_usart2",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\uart.rs",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "uart_uartdma_on_idle",
+      "target": "uart_uartdma_handle_idle_usart1",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\uart.rs",
+      "source_location": "L49",
+      "weight": 1.0
+    },
+    {
+      "source": "uart_uartdma_on_idle",
+      "target": "uart_uartdma_handle_idle_usart2",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\uart.rs",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "uart_uartdma_handle_idle_usart1",
+      "target": "uart_uartdma_extract_lines",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\uart.rs",
+      "source_location": "L111",
+      "weight": 1.0
+    },
+    {
+      "source": "uart_uartdma_handle_idle_usart2",
+      "target": "uart_uartdma_extract_lines",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\uart.rs",
+      "source_location": "L176",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

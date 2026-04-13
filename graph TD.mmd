@@ -1,0 +1,6 @@
+graph TD
+    main["main.rs"] --> eeg["eeg_sensor.rs"]
+    main --> speed["speed_sensor.rs"]
+    main --> logger["logger.rs"]
+    eeg --> logger
+    speed --> logger

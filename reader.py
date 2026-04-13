@@ -5,10 +5,15 @@ import threading
 from pynput import keyboard
 
 # --- Configuration ---
-COM_PORT = 'COM6' 
-BAUD_RATE = 115200
+# Both EEG and speed data go through HC-05 Bluetooth on USART2.
+# The USB-serial cable (COM6) had persistent write timeouts due to
+# hardware flow control at the adapter chip level. Bluetooth works
+# reliably. At 9600 baud with both streams (~280 bytes/sec), we're
+# at ~29% utilization — plenty of headroom.
+COM_PORT = 'COM7'
+BAUD = 9600
 FILE_NAME = 'acquiredDataset.csv'
-SAMPLING_INTERVAL = 0.1 
+SAMPLING_INTERVAL = 0.1
 
 # --- Simulation State ---
 state = {
@@ -18,10 +23,13 @@ state = {
 
 # --- Serial Initialization ---
 try:
-    # Added write_timeout=0.05 to prevent infinite blocking, 
-    # but still allow try/except to catch it.
-    ser = serial.Serial(COM_PORT, BAUD_RATE, timeout=0.1, write_timeout=0.05)
-    print(f"Connected to {COM_PORT}")
+    ser = serial.Serial(
+        COM_PORT, BAUD, timeout=0.1, write_timeout=2.0,
+        rtscts=False, dsrdtr=False, xonxoff=False,
+    )
+    ser.reset_input_buffer()
+    ser.reset_output_buffer()
+    print(f"Connected → {COM_PORT} @ {BAUD} (HC-05 Bluetooth, EEG + Speed on USART2)")
 except Exception as e:
     print(f"Serial Error: {e}")
     exit()
@@ -32,14 +40,12 @@ def on_press(key):
             state["speed"] += 5.0
         elif key == keyboard.Key.down:
             state["speed"] = max(0.0, state["speed"] - 5.0)
-        
-        # Wrapped keyboard-driven write
+
         payload = f"S,{state['speed']:.1f}\n"
         try:
             ser.write(payload.encode())
         except serial.SerialTimeoutException:
-            pass # Ignore timeout on manual input to keep UI responsive
-            
+            pass
     except Exception:
         pass
 
@@ -50,24 +56,25 @@ listener.start()
 def stream_data():
     df = pd.read_csv(FILE_NAME)
     print("Streaming started. Use UP/DOWN arrows to simulate speed.")
-    
+
+    # Send initial speed so the STM32 has a value from the start
+    ser.write(f"S,{state['speed']:.1f}\n".encode())
+
     for _, row in df.iterrows():
         if not state["running"]:
             break
-        
+
         alpha = row['lowAlpha'] + row['highAlpha']
         beta = row['lowBeta'] + row['highBeta']
-        
-        # EEG Packet: E,Alpha,Beta
+
+        # EEG data now goes through Bluetooth (same port as speed)
         payload = f"E,{alpha:.1f},{beta:.1f}\n"
-        
         try:
             ser.write(payload.encode())
         except serial.SerialTimeoutException:
-            # Handle the write timeout gracefully
-            print(f"\n[Warning] Write Timeout: STM32 buffer full. Dropping packet.", end='')
-        
-        print(f"Current Speed: {state['speed']:.1f} km/h | Tx: {payload.strip()}    ", end='\r')
+            print(f"\n[Warning] Write timeout: packet dropped.", end='')
+
+        print(f"Speed: {state['speed']:.1f} km/h | EEG Tx: {payload.strip()}    ", end='\r')
         time.sleep(SAMPLING_INTERVAL)
 
 try:
@@ -75,3 +82,5 @@ try:
 except KeyboardInterrupt:
     state["running"] = False
     print("\nSimulation Stopped.")
+finally:
+    ser.close()

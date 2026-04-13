@@ -1,0 +1,62 @@
+    Checking nb v1.1.0
+    Checking critical-section v1.2.0
+    Checking vcell v0.1.3
+    Checking void v1.0.2
+    Checking stable_deref_trait v1.2.1
+    Checking byteorder v1.5.0
+    Checking bitfield v0.13.2
+    Checking gcd v2.3.0
+    Checking powerfmt v0.2.0
+    Checking bare-metal v1.0.0
+    Checking embedded-hal v1.0.0
+    Checking time-core v0.1.8
+    Checking num-conv v0.2.1
+    Checking bare-metal v0.2.5
+    Checking cortex-m-rt v0.7.5
+    Checking enumflags2 v0.7.12
+    Checking embedded-storage v0.3.1
+    Checking rtic-monotonic v1.0.0
+    Checking ufmt-write v0.1.0
+    Checking rtic-core v1.0.0
+    Checking volatile-register v0.2.2
+    Checking rand_core v0.6.4
+    Checking embedded-dma v0.2.0
+    Checking nb v0.1.3
+    Checking panic-halt v0.2.0
+    Checking fugit v0.3.9
+    Checking rtt-target v0.5.0
+    Checking embedded-hal v0.2.7
+    Checking hash32 v0.2.1
+    Checking hash32 v0.3.1
+    Checking deranged v0.5.8
+    Checking embedded-hal-nb v1.0.0
+    Checking heapless v0.8.0
+    Checking cortex-m v0.7.7
+    Checking heapless v0.7.17
+    Checking fugit-timer v0.1.3
+    Checking stm32f4 v0.15.1
+    Checking time v0.3.47
+    Checking cortex-m-rtic v1.1.4
+    Checking stm32f4xx-hal v0.21.0
+    Checking eeg_drowsiness_detection v0.1.0 (C:\Users\USER\EEG_drowsiness_detection)
+warning: unused import: `crate::touch::TouchScreen`
+ --> src\deadman.rs:1:5
+  |
+1 | use crate::touch::TouchScreen;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: associated function `read_reg` is never used
+   --> src\i2c.rs:274:12
+    |
+187 | impl I2c3 {
+    | --------- associated function in this implementation
+...
+274 |     pub fn read_reg(addr: u8, register: u8) -> u8 {
+    |            ^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `eeg_drowsiness_detection` (bin "eeg_drowsiness_detection") generated 2 warnings (run `cargo fix --bin "eeg_drowsiness_detection" -p eeg_drowsiness_detection` to apply 1 suggestion)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 9.05s
