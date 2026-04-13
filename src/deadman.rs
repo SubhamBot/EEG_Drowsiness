@@ -206,13 +206,16 @@ impl DeadmanSwitch {
     const CLK_TIMEOUT: u32 = 500_000;
 
     // Raw PLLCFGR values (bypasses PAC abstraction to avoid potential .write() issues):
-    //   Bit 22: PLLSRC = HSE (1)
-    //   Bits 5:0: PLLM    Bits 14:6: PLLN    Bits 17:16: PLLP    Bits 27:24: PLLQ
+    //   Bits 30:28: PLLR    Bits 27:24: PLLQ    Bit 22: PLLSRC = HSE (1)
+    //   Bits 17:16: PLLP    Bits 14:6: PLLN     Bits 5:0: PLLM
     //
-    // Full: HSE/8 * 336 / 2 = 168 MHz, Q=7 for USB
-    const PLLCFGR_FULL: u32 = (7 << 24) | (1 << 22) | (0b00 << 16) | (336 << 6) | 8;
-    // Low:  HSE/8 * 192 / 4 =  48 MHz, Q=4 for USB
-    const PLLCFGR_LOW: u32 = (4 << 24) | (1 << 22) | (0b01 << 16) | (192 << 6) | 8;
+    // CRITICAL: PLLR (bits 30:28) MUST be ≥ 2 on STM32F429.
+    // Writing 0 is invalid and prevents PLL from locking.
+    //
+    // Full: HSE/8 * 336 / 2 = 168 MHz, Q=7 for USB, R=2 (minimum valid)
+    const PLLCFGR_FULL: u32 = (2 << 28) | (7 << 24) | (1 << 22) | (0b00 << 16) | (336 << 6) | 8;
+    // Low:  HSE/8 * 192 / 4 =  48 MHz, Q=4 for USB, R=2 (minimum valid)
+    const PLLCFGR_LOW: u32 = (2 << 28) | (4 << 24) | (1 << 22) | (0b01 << 16) | (192 << 6) | 8;
 
     fn apply_clock(mode: PowerMode) {
         let rcc = unsafe { &*pac::RCC::ptr() };
@@ -272,6 +275,9 @@ impl DeadmanSwitch {
         };
         // Write PLLCFGR using raw bits (not PAC field methods)
         rcc.pllcfgr.write(|w| unsafe { w.bits(pllcfgr_val) });
+
+        // Brief delay for PLL analog to latch new divider config
+        cortex_m::asm::delay(200);
 
         rtt_target::rprintln!(
             "[CLK] wrote PLLCFGR={:#010x} (readback={:#010x})",

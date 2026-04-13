@@ -5,6 +5,7 @@ mod deadman;
 mod eeg_sensor;
 mod hc05;
 mod i2c;
+mod led;
 mod logger;
 mod speed_sensor;
 mod touch;
@@ -15,9 +16,10 @@ use panic_halt as _;
 // EXTI0 is reserved for USER button (PA0), so use SPI4 as a dispatcher instead.
 #[rtic::app(device = stm32f4xx_hal::pac, peripherals = true, dispatchers = [SPI4, EXTI1, EXTI2, EXTI3])]
 mod app {
-    use crate::deadman::{DeadmanState, DeadmanSwitch};
+    use crate::deadman::{DeadmanState, DeadmanSwitch, PowerMode};
     use crate::eeg_sensor::{EegData, EegSensor};
     use crate::i2c::I2c3;
+    use crate::led::StatusLed;
     use crate::logger::LogWriter;
     use crate::speed_sensor::SpeedSensor;
     use crate::touch::{TouchScreen, UserButton};
@@ -136,6 +138,11 @@ mod app {
         // ---- Sensor + touch + button init ----
         EegSensor::init_dma(eeg_rx_buf);
         SpeedSensor::init_dma(speed_rx_buf);
+
+        // ---- Status LEDs (PG13 green, PG14 red) + blink timer (TIM3) ----
+        StatusLed::init();
+        StatusLed::init_blink_timer();
+        StatusLed::set(DeadmanState::Orange); // Boot state = Orange
 
         // Initialize STMPE811 with verification (retries up to 3 times).
         // If I2C fails, the system stays in Orange (full monitoring) —
@@ -268,51 +275,43 @@ mod app {
     #[task(shared = [deadman], capacity = 2)]
     fn handle_touch(mut ctx: handle_touch::Context) {
         rtt_target::rprintln!("[TOUCH] handle start");
-        let state = ctx.shared.deadman.lock(|d| {
+        let (state, clk, samp) = ctx.shared.deadman.lock(|d| {
             let s = d.on_touch_interrupt();
             rtt_target::rprintln!("[TOUCH] i2c+state done");
-            s
+            (s, d.clock_mhz(), d.sampling_ms())
         });
         rtt_target::rprintln!("[TOUCH] clock done");
 
-        // Verify USART2 is still alive after clock switch
-        {
-            let usart2 = unsafe { &*pac::USART2::ptr() };
-            let dma1 = unsafe { &*pac::DMA1::ptr() };
-            rtt_target::rprintln!(
-                "[TOUCH] U2: CR1={:#06x} CR3={:#06x} BRR={:#06x} DMA_CR={:#010x} NDTR={}",
-                usart2.cr1.read().bits(),
-                usart2.cr3.read().bits(),
-                usart2.brr.read().bits(),
-                dma1.st[5].cr.read().bits(),
-                dma1.st[5].ndtr.read().bits(),
-            );
-        }
+        StatusLed::set(state);
 
         let mut w = LogWriter::new();
         match state {
             DeadmanState::Green => {
                 let _ = writeln!(
                     w,
-                    "[DEADMAN] GREEN -- touch held, low power (48 MHz / 500 ms)"
+                    "[DEADMAN] GREEN -- touch held, low power ({} MHz / {} ms)",
+                    clk, samp
                 );
             }
             DeadmanState::Yellow => {
                 let _ = writeln!(
                     w,
-                    "[DEADMAN] YELLOW -- touch lost, grace period (48 MHz / 500 ms)"
+                    "[DEADMAN] YELLOW -- touch lost, grace period ({} MHz / {} ms)",
+                    clk, samp
                 );
             }
             DeadmanState::Orange => {
                 let _ = writeln!(
                     w,
-                    "[DEADMAN] ORANGE -- monitoring active (168 MHz / 100 ms)"
+                    "[DEADMAN] ORANGE -- monitoring active ({} MHz / {} ms)",
+                    clk, samp
                 );
             }
             DeadmanState::Red => {
                 let _ = writeln!(
                     w,
-                    "[DEADMAN] RED -- manual override (168 MHz / 100 ms)"
+                    "[DEADMAN] RED -- manual override ({} MHz / {} ms)",
+                    clk, samp
                 );
             }
         }
@@ -324,15 +323,28 @@ mod app {
         let tim2 = unsafe { &*pac::TIM2::ptr() };
         tim2.sr.modify(|_, w| w.uif().clear_bit());
 
-        let state = ctx.shared.deadman.lock(|d| d.on_grace_timeout());
+        let (state, clk, samp) = ctx.shared.deadman.lock(|d| {
+            let s = d.on_grace_timeout();
+            (s, d.clock_mhz(), d.sampling_ms())
+        });
 
         if state == DeadmanState::Orange {
+            StatusLed::set(DeadmanState::Orange);
             let mut w = LogWriter::new();
             let _ = writeln!(
                 w,
-                "[DEADMAN] YELLOW -> ORANGE -- grace expired, full monitoring (168 MHz / 100 ms)"
+                "[DEADMAN] YELLOW -> ORANGE -- grace expired, full monitoring ({} MHz / {} ms)",
+                clk, samp
             );
         }
+    }
+
+    /// TIM3 -- Red-state LED blink (~4 Hz toggle of both LEDs).
+    #[task(binds = TIM3)]
+    fn tim3_blink(_ctx: tim3_blink::Context) {
+        let tim3 = unsafe { &*pac::TIM3::ptr() };
+        tim3.sr.modify(|_, w| w.uif().clear_bit());
+        StatusLed::toggle();
     }
 
     /// EXTI0 -- USER button press (toggle Red override).
@@ -340,20 +352,27 @@ mod app {
     fn exti0_user_button(mut ctx: exti0_user_button::Context) {
         UserButton::clear_exti_pending();
 
-        let state = ctx.shared.deadman.lock(|d| d.on_user_button());
+        let (state, clk, samp) = ctx.shared.deadman.lock(|d| {
+            let s = d.on_user_button();
+            (s, d.clock_mhz(), d.sampling_ms())
+        });
+
+        StatusLed::set(state);
 
         let mut w = LogWriter::new();
         match state {
             DeadmanState::Red => {
                 let _ = writeln!(
                     w,
-                    "[DEADMAN] RED -- USER button override (168 MHz / 100 ms)"
+                    "[DEADMAN] RED -- USER button override ({} MHz / {} ms)",
+                    clk, samp
                 );
             }
             DeadmanState::Orange => {
                 let _ = writeln!(
                     w,
-                    "[DEADMAN] RED -> ORANGE -- override released (168 MHz / 100 ms)"
+                    "[DEADMAN] RED -> ORANGE -- override released ({} MHz / {} ms)",
+                    clk, samp
                 );
             }
             _ => {
@@ -381,8 +400,31 @@ mod app {
     }
 
     /// Drowsiness detection with persistence window formula.
-    #[task(shared = [current_speed, drowsy_counter, is_alert_active, deadman], capacity = 8)]
+    ///
+    /// In Low power mode (Green/Yellow), only every 5th EEG packet is
+    /// processed — effective sampling drops from 100 ms to 500 ms.
+    /// Combined with the PLL clock switch (168 → 48 MHz), this gives
+    /// genuine low power: fewer CPU cycles AND less frequent processing.
+    #[task(shared = [current_speed, drowsy_counter, is_alert_active, deadman], local = [skip_count: u32 = 0], capacity = 8)]
     fn drowsiness_check(mut ctx: drowsiness_check::Context, eeg: EegData) {
+        // ---- Low-power packet skipping ----
+        // In Low mode: process 1 out of every 5 packets (500 ms effective rate).
+        // In Full mode: process every packet (100 ms).
+        let power_low = ctx
+            .shared
+            .deadman
+            .lock(|d| d.power_mode() == PowerMode::Low);
+
+        if power_low {
+            *ctx.local.skip_count += 1;
+            if *ctx.local.skip_count < 5 {
+                return; // silently skip — save CPU cycles
+            }
+            *ctx.local.skip_count = 0; // process this one
+        } else {
+            *ctx.local.skip_count = 0; // Full mode: always process
+        }
+
         let ratio = eeg.alpha / eeg.beta;
         let v = ctx.shared.current_speed.lock(|v| *v);
         let frame_period_ms = ctx.shared.deadman.lock(|d| d.sampling_ms() as f32);
