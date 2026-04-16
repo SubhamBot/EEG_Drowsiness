@@ -1,21 +1,39 @@
-#![no_main]
-#![no_std]
+// Conditional no_std: when running `cargo test` on the host, we need std + test harness.
+// When building for the ARM target, full no_std/no_main embedded binary.
+#![cfg_attr(not(test), no_main)]
+#![cfg_attr(not(test), no_std)]
 
+// Always available (pure logic, no hardware dependencies)
+mod alert;
+
+// Hardware-dependent modules — only compiled for the embedded target
+#[cfg(not(test))]
 mod deadman;
+#[cfg(not(test))]
 mod eeg_sensor;
+#[cfg(not(test))]
 mod hc05;
+#[cfg(not(test))]
 mod i2c;
+#[cfg(not(test))]
 mod led;
+#[cfg(not(test))]
 mod logger;
+#[cfg(not(test))]
 mod speed_sensor;
+#[cfg(not(test))]
 mod touch;
+#[cfg(not(test))]
 mod uart;
 
+#[cfg(not(test))]
 use panic_halt as _;
 
 // EXTI0 is reserved for USER button (PA0), so use SPI4 as a dispatcher instead.
+#[cfg(not(test))]
 #[rtic::app(device = stm32f4xx_hal::pac, peripherals = true, dispatchers = [SPI4, EXTI1, EXTI2, EXTI3])]
 mod app {
+    use crate::alert::AlertState;
     use crate::deadman::{DeadmanState, DeadmanSwitch, PowerMode};
     use crate::eeg_sensor::{EegData, EegSensor};
     use crate::i2c::I2c3;
@@ -37,16 +55,13 @@ mod app {
 
     // --------------- drowsiness algorithm constants ------------------------------
     const DROWSY_RATIO_THRESHOLD: f32 = 1.2;
-    const T_MAX_SECONDS: f32 = 10.0;
-    const V0: f32 = 60.0;
 
     // --------------- RTIC resources ----------------------------------------------
 
     #[shared]
     struct Shared {
         current_speed: f32,
-        drowsy_counter: u32,
-        is_alert_active: bool,
+        alert: AlertState,
         deadman: DeadmanSwitch,
     }
 
@@ -187,8 +202,7 @@ mod app {
         (
             Shared {
                 current_speed: 60.0,
-                drowsy_counter: 0,
-                is_alert_active: false,
+                alert: AlertState::new(),
                 deadman: DeadmanSwitch::new(),
             },
             Local {
@@ -399,13 +413,15 @@ mod app {
         );
     }
 
-    /// Drowsiness detection with persistence window formula.
+    /// Drowsiness detection with multi-level alert escalation.
+    ///
+    ///   5 consecutive drowsy frames  -> Alert1
+    ///   10 consecutive drowsy frames -> Alert1 + Alert2
+    ///   5 consecutive normal frames  -> de-escalate one level
     ///
     /// In Low power mode (Green/Yellow), only every 5th EEG packet is
     /// processed — effective sampling drops from 100 ms to 500 ms.
-    /// Combined with the PLL clock switch (168 → 48 MHz), this gives
-    /// genuine low power: fewer CPU cycles AND less frequent processing.
-    #[task(shared = [current_speed, drowsy_counter, is_alert_active, deadman], local = [skip_count: u32 = 0], capacity = 8)]
+    #[task(shared = [current_speed, alert, deadman], local = [skip_count: u32 = 0], capacity = 8)]
     fn drowsiness_check(mut ctx: drowsiness_check::Context, eeg: EegData) {
         // ---- Low-power packet skipping ----
         // In Low mode: process 1 out of every 5 packets (500 ms effective rate).
@@ -420,37 +436,22 @@ mod app {
             if *ctx.local.skip_count < 5 {
                 return; // silently skip — save CPU cycles
             }
-            *ctx.local.skip_count = 0; // process this one
+            *ctx.local.skip_count = 0;
         } else {
-            *ctx.local.skip_count = 0; // Full mode: always process
+            *ctx.local.skip_count = 0;
         }
 
+        // ---- drowsiness ratio ----
         let ratio = eeg.alpha / eeg.beta;
-        let v = ctx.shared.current_speed.lock(|v| *v);
-        let frame_period_ms = ctx.shared.deadman.lock(|d| d.sampling_ms() as f32);
+        let is_drowsy = ratio > DROWSY_RATIO_THRESHOLD;
 
-        let v0_sq = V0 * V0;
-        let t_v_seconds = T_MAX_SECONDS * v0_sq / ((v * v) + v0_sq);
-        let frame_limit_f = t_v_seconds * (1000.0 / frame_period_ms);
-        let frame_limit: u32 = if frame_limit_f < 1.0 {
-            1
-        } else {
-            frame_limit_f as u32
-        };
-
-        let (c_now, a_now) = ctx.shared.drowsy_counter.lock(|c| {
-            if ratio > DROWSY_RATIO_THRESHOLD {
-                *c = c.saturating_add(1);
-            } else {
-                *c = 0;
-            }
-            let alert = ctx.shared.is_alert_active.lock(|a| {
-                *a = *c >= frame_limit;
-                *a
-            });
-            (*c, alert)
+        // ---- feed into alert state machine ----
+        let (level_label, d_cnt, n_cnt) = ctx.shared.alert.lock(|a| {
+            a.update(is_drowsy);
+            (a.level_label(), a.drowsy_count(), a.normal_count())
         });
 
+        let v = ctx.shared.current_speed.lock(|v| *v);
         let (clk, samp, label) = ctx
             .shared
             .deadman
@@ -459,8 +460,8 @@ mod app {
         let mut w = LogWriter::new();
         let _ = writeln!(
             w,
-            "[EEG] ratio={:.2} T={:.1}s lim={} cnt={} alert={} | {} {}MHz {}ms",
-            ratio, t_v_seconds, frame_limit, c_now, a_now, label, clk, samp
+            "[EEG] ratio={:.2} drowsy={} dcnt={} ncnt={} {} | v={:.1} {} {}MHz {}ms",
+            ratio, is_drowsy, d_cnt, n_cnt, level_label, v, label, clk, samp
         );
     }
 }

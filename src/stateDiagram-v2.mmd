@@ -1,0 +1,15 @@
+stateDiagram-v2
+    [*] --> Orange : boot
+
+    Orange --> Green : touch
+    Green --> Yellow : release
+    Yellow --> Green : touch
+    Yellow --> Orange : grace timeout (3s)
+
+    Orange --> Red : USER btn
+    Green --> Red : USER btn
+    Yellow --> Red : USER btn
+    Red --> Orange : USER btn
+
+    Red --> Red : touch (ignored)
+    Orange --> Orange : release (ignored)
