@@ -108,13 +108,13 @@ t1, t2 = clamped to MIN_FRAMES = 2   (noise floor)
 
 ### Thresholds by Speed (Full Power, 100 ms per packet)
 
-| Speed | Alert1 frames (t1) | Alert2 frames (t2) | Packets to Alert1 | Packets to Alert2 |
-|-------|--------------------|--------------------|-------------------|-------------------|
-| ≤10 km/h | 9 | 18 | 9 packets | 18 packets |
-| 30 km/h | 3 | 6 | 3 packets | 6 packets |
-| 60 km/h | 2 | 3 | 2 packets | 3 packets |
-| 90 km/h | 2 | 2 | 2 packets | 2 packets |
-| 120 km/h | 2 | 2 | 2 packets | 2 packets |
+| Speed | Alert1 frames (t1) | Alert2 frames (t2) |
+|-------|--------------------|--------------------|
+| ≤10 km/h | 9 | 18 |
+| 30 km/h | 3 | 6 |
+| 60 km/h | 2 | 3 |
+| 90 km/h | 2 | 2 |
+| 120 km/h | 2 | 2 | 
 
 ### Reaction Times by Speed (Full Power, 100 ms per packet)
 
