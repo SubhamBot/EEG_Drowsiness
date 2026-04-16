@@ -1,95 +1,131 @@
 # EEG Drowsiness Detection
 
-Real-time drowsiness detection for STM32F429 using EEG alpha/beta ratio and vehicle speed, with a dead man's switch for adaptive power management. Built with RTIC.
+Real-time drowsiness detection on STM32F429 Discovery using EEG alpha/beta ratio, with a dead man's switch for adaptive power management. Built with RTIC 1.x (no_std, no heap).
 
-## Module Graph
+## Event-Driven Architecture
 
-```mermaid
-graph TD
-    uart["uart.rs\n(DMA + IDLE)"]
-    hc05["hc05.rs\n(Bluetooth SPP)"]
-    i2c["i2c.rs\n(I2C3 bus)"]
-    touch["touch.rs\n(STMPE811)"]
-    deadman["deadman.rs\n(power policy)"]
+The system is fully event-dispatched — zero polling, zero main loop. Every action is triggered by a hardware interrupt and handled through RTIC's priority-based task system.
 
-    eeg["eeg_sensor.rs"] --> uart
-    speed["speed_sensor.rs"] --> hc05
-    hc05 --> uart
-    touch --> i2c
+### Interrupt Map
 
-    eeg -->|EegData| main["main.rs\n(drowsiness logic)"]
-    speed -->|speed f32| main
-    deadman -->|PowerMode| main
-    deadman --> touch
-    main --> logger["logger.rs\nLogWriter → RTT"]
+| Vector | Source | Priority | Role |
+|--------|--------|----------|------|
+| `USART1` | EEG sensor IDLE line | default | Extracts `"E,alpha,beta"` packets via DMA circular buffer |
+| `USART2` | HC-05 Bluetooth IDLE line | default | Extracts both `"E,..."` and `"S,..."` packets via DMA |
+| `EXTI15` | STMPE811 touch INT (PA15, falling edge) | **3** (high) | Clears EXTI pending, spawns `handle_touch` — returns in ~100 ns |
+| `EXTI0` | USER button (PA0, rising edge) | default | Toggles Red override state |
+| `TIM2` | Grace period one-shot (3 s) | default | Yellow → Orange transition |
+| `TIM3` | LED blink timer (~4 Hz) | default | Toggles both LEDs in Red state |
+
+### Software Task Dispatchers
+
+RTIC needs free interrupt vectors to dispatch software tasks. The dispatchers are hardware interrupts that we "donate" to RTIC — they never fire from actual hardware, RTIC triggers them internally to run deferred work:
+
+```
+dispatchers = [SPI4, EXTI1, EXTI2, EXTI3]
 ```
 
-## Data Flow
+**Why SPI4 instead of EXTI0?** EXTI0 is the USER button interrupt. If RTIC used it as a dispatcher, button presses would collide with task dispatch. SPI4 is unused peripheral hardware on this board — safe to repurpose.
 
-```mermaid
-sequenceDiagram
-    participant EEG_HW as EEG Sensor
-    participant UART as uart.rs
-    participant EEG as eeg_sensor.rs
-    participant SPD_HW as Speed Sensor
-    participant HC05 as hc05.rs
-    participant SPD as speed_sensor.rs
-    participant TOUCH as touch.rs / i2c.rs
-    participant DM as deadman.rs
-    participant MAIN as main.rs
-    participant LOG as LogWriter (RTT)
+These dispatchers run the software tasks:
+- **`handle_touch`** — deferred I2C read + state machine transition (~800 us)
+- **`drowsiness_check`** — EEG ratio computation + alert escalation
+- **`update_speed`** — stores latest speed value
 
-    EEG_HW->>UART: USART1 RX (wire, 115200)
-    UART->>EEG: line bytes
-    EEG->>MAIN: EegData { alpha, beta }
+### How This Prevents the Screen Freeze Bug
 
-    SPD_HW->>HC05: Bluetooth Classic
-    HC05->>UART: USART2 RX (HC-05, 9600)
-    UART->>SPD: line bytes
-    SPD->>MAIN: speed f32
+The classic embedded bug: a slow I2C transaction inside a high-priority ISR blocks everything — UART data is lost, RTT logging freezes, the system appears hung.
 
-    TOUCH->>DM: is_touched()
-    alt Touch held
-        DM->>DM: 48 MHz, 500ms sampling
-    else Touch released
-        DM->>DM: 168 MHz, 100ms sampling
-    end
-    DM->>MAIN: PowerMode + sampling_ms
+Our architecture splits touch handling into two layers:
 
-    MAIN->>MAIN: T(v) = T_max * v0^2 / (v^2 + v0^2)
-    MAIN->>MAIN: frame_limit adapts to sampling rate
-    MAIN->>LOG: [EEG] ratio=.. alert=.. pwr=..
+```
+EXTI15 ISR (priority 3, ~100 ns)          ← fast: just clears pending + spawns
+    └──► handle_touch (priority 1, ~800 us)  ← slow: blocking I2C happens here
 ```
 
-## Architecture
+1. **EXTI15** fires at priority 3, clears the EXTI pending bit, calls `handle_touch::spawn()`, and exits in ~100 ns. No I2C, no blocking.
+2. **`handle_touch`** runs at priority 1 (lowest). The ~800 us of blocking I2C reads/writes happen here. During this time, USART1/USART2 interrupts (higher priority) still fire and DMA keeps buffering incoming data. RTT logging continues. Nothing freezes.
+3. Every I2C wait loop has a **hard timeout** (100K iterations). If the bus locks up, the call returns `false`/`None` instead of hanging forever.
 
-- **uart.rs** — shared UART+DMA module. Circular DMA, IDLE interrupt, line assembly. Used by both sensors.
-- **hc05.rs** — HC-05 Bluetooth Classic (SPP) wrapper over `uart.rs`.
-- **i2c.rs** — shared I2C3 driver (PA8 SCL, PC9 SDA). Used by the touch controller.
-- **touch.rs** — STMPE811 touch controller driver. Reports touch held/released.
-- **deadman.rs** — dead man's switch policy. Touch held = low power (48 MHz, 500ms sampling). Released = full power (168 MHz, 100ms). Handles clock scaling and UART baud recalculation.
-- **eeg_sensor.rs** — USART1, parses `E,alpha,beta`, delivers `EegData`.
-- **speed_sensor.rs** — USART2 via HC-05, parses `S,speed`, delivers speed.
-- **main.rs** — orchestrator. Drowsiness detection with adaptive persistence window `T(v) = T_max * v0^2 / (v^2 + v0^2)`. Frame limit adapts to the current sampling rate from the dead man's switch.
-- **logger.rs** — RTT output to `cargo run` terminal.
+### Deadlock Prevention
+
+RTIC uses the **Priority Ceiling Protocol** — mathematically proven deadlock-free. The rules:
+
+- Shared resources are accessed via `.lock()` which raises the caller's priority to the ceiling (highest priority of any task that uses that resource)
+- No task can preempt another while it holds the same resource
+- No circular wait is possible — priority ordering prevents it
+- No mutexes, no spinlocks, no `critical_section!` needed
+
+Additionally:
+- All I2C transactions have hard timeouts — no infinite wait loops
+- `stop_grace_timer()` waits for STOP bit to clear before issuing START (prevents I2C START/STOP race)
+- Bus recovery runs at boot (bit-bang SCL to free stuck STMPE811)
+- DMA runs independently of CPU — UART data is buffered even during I2C blocking
 
 ## Dead Man's Switch
 
-| State | Clock | Sampling | Rationale |
-|---|---|---|---|
-| Touch held | 48 MHz | 500 ms | Driver is attentive — save power |
-| Touch released | 168 MHz | 100 ms | Driver may be drowsy — monitor aggressively |
+```mermaid
+stateDiagram-v2
+    [*] --> Orange : boot
+
+    Orange --> Green : touch
+    Green --> Yellow : release
+    Yellow --> Green : touch
+    Yellow --> Orange : grace timeout (3s)
+
+    Orange --> Red : USER btn
+    Green --> Red : USER btn
+    Yellow --> Red : USER btn
+    Red --> Orange : USER btn
+
+    Red --> Red : touch (ignored)
+    Orange --> Orange : release (ignored)
+```
+
+| State | Power Mode | Clock | Sampling | Behaviour |
+|-------|-----------|-------|----------|-----------|
+| Green | Low | 48 MHz | 500 ms (skip 4/5 packets) | Touch held — driver attentive, save power |
+| Yellow | Low | 48 MHz | 500 ms | Grace period — 3 s before full monitoring |
+| Orange | Full | 168 MHz | 100 ms (every packet) | Active monitoring — full speed |
+| Red | Full | 168 MHz | 100 ms | Manual override — touch ignored, LEDs blink |
+
+Low power mode is genuine: PLL reconfigures from 168 → 48 MHz, and 4 out of 5 EEG packets are skipped at the application layer.
+
+## Alert Escalation
+
+| Condition | Alert Level |
+|-----------|------------|
+| 5 consecutive drowsy frames (ratio > 1.2) | **Alert1** |
+| 10 consecutive drowsy frames | **Alert1 + Alert2** |
+| 5 consecutive normal frames | De-escalate one level |
+
+A single normal frame resets the drowsy counter. A single drowsy frame resets the normal counter. Streaks must be unbroken.
+
+## LED Indicators (PG13 green, PG14 red)
+
+| State | Green LED | Red LED |
+|-------|-----------|---------|
+| Green | ON | OFF |
+| Yellow | ON | ON (amber) |
+| Orange | OFF | ON |
+| Red | Blink ~4 Hz | Blink ~4 Hz |
+
+## Testing
+
+```sh
+cargo test --target x86_64-pc-windows-msvc
+```
+
+53 tests covering: alert state machine, EEG/speed parsers, deadman transitions, and dataset integration (15 real EEG rows fed through the full pipeline).
+
+Hardware modules are gated behind `#[cfg(not(test))]` so pure logic compiles on the host while the embedded build is unaffected.
 
 ## Running
 
-Flash and open RTT log:
 ```sh
-cargo run --release
+cargo build --release          # build firmware
+cargo run --release            # flash + open RTT log
+python reader.py               # stream simulated EEG + speed via Bluetooth
 ```
 
-Stream simulated sensor data from PC:
-```sh
-python reader.py
-```
-
-Configure `COM_PORT_EEG` and `COM_PORT_SPEED` in `reader.py` to match your adapters.
+`reader.py` sends both EEG and speed data over HC-05 Bluetooth (COM7, 9600 baud).
