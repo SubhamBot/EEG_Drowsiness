@@ -445,13 +445,18 @@ mod app {
         let ratio = eeg.alpha / eeg.beta;
         let is_drowsy = ratio > DROWSY_RATIO_THRESHOLD;
 
+        // ---- speed-scaled alert thresholds ----
+        // Faster car -> shorter persistence window (fewer drowsy frames
+        // needed before Alert1/Alert2). Targets ~5 m distance-to-Alert2.
+        let v = ctx.shared.current_speed.lock(|v| *v);
+        let (t1, t2) = crate::alert::thresholds_for_speed(v);
+
         // ---- feed into alert state machine ----
         let (level_label, d_cnt, n_cnt) = ctx.shared.alert.lock(|a| {
-            a.update(is_drowsy);
+            a.update_with_thresholds(is_drowsy, t1, t2);
             (a.level_label(), a.drowsy_count(), a.normal_count())
         });
 
-        let v = ctx.shared.current_speed.lock(|v| *v);
         let (clk, samp, label) = ctx
             .shared
             .deadman
@@ -460,8 +465,8 @@ mod app {
         let mut w = LogWriter::new();
         let _ = writeln!(
             w,
-            "[EEG] ratio={:.2} drowsy={} dcnt={} ncnt={} {} | v={:.1} {} {}MHz {}ms",
-            ratio, is_drowsy, d_cnt, n_cnt, level_label, v, label, clk, samp
+            "[EEG] ratio={:.2} drowsy={} dcnt={} ncnt={} {} | v={:.1} t1={} t2={} {} {}MHz {}ms",
+            ratio, is_drowsy, d_cnt, n_cnt, level_label, v, t1, t2, label, clk, samp
         );
     }
 }

@@ -1,8 +1,12 @@
 /// Multi-level drowsiness alert system.
 ///
-/// Escalation (consecutive drowsy frames):
-///   5  -> Alert1
-///   10 -> Alert2  (Alert1 remains active)
+/// Escalation (consecutive drowsy frames, speed-scaled):
+///   At reference speed V_REF = 60 km/h:
+///     Alert1 after ~2 frames (200 ms)
+///     Alert2 after ~3 frames (~300 ms)  -> ~5 m distance
+///
+/// Thresholds scale as V_REF / speed, clamped to a 2-frame floor
+/// (the minimum that rejects single-sample sensor noise).
 ///
 /// De-escalation (consecutive normal frames):
 ///   5  -> drop one level:  Alert2 -> Alert1,  Alert1 -> None
@@ -20,6 +24,44 @@ pub struct AlertState {
     level: AlertLevel,
 }
 
+// ---- Speed-scaled threshold tuning ------------------------------------------
+//
+// Targets ~5 m distance-to-Alert2 across the speed range. Below 90 km/h the
+// two alert levels are distinct; above 90 km/h both collapse to the 2-frame
+// floor (can't go lower without triggering on single-sample noise).
+
+/// Alert1 base frames at reference speed (effectively floored to 2).
+pub const ALERT1_BASE: f32 = 1.5;
+/// Alert2 base frames at reference speed (~5 m distance at 60 km/h).
+pub const ALERT2_BASE: f32 = 3.0;
+/// Reference speed (km/h) at which BASE frames apply.
+pub const V_REF: f32 = 60.0;
+/// Minimum frames (noise floor). 1 frame = single-sample, rejects nothing.
+pub const MIN_FRAMES: u32 = 2;
+/// Minimum speed used in scaling (avoid div-by-zero / infinite window at rest).
+pub const MIN_SPEED_KMH: f32 = 10.0;
+
+/// Derive (Alert1, Alert2) thresholds from current speed in km/h.
+///
+/// Returns consecutive-drowsy-frame counts. Always satisfies:
+/// `MIN_FRAMES <= t1 <= t2`.
+pub fn thresholds_for_speed(speed_kmh: f32) -> (u32, u32) {
+    let v = if speed_kmh.is_finite() && speed_kmh > MIN_SPEED_KMH {
+        speed_kmh
+    } else {
+        MIN_SPEED_KMH
+    };
+    let scale = V_REF / v;
+    let t1_raw = (ALERT1_BASE * scale) as u32;
+    let t2_raw = (ALERT2_BASE * scale) as u32;
+    let t1 = if t1_raw < MIN_FRAMES { MIN_FRAMES } else { t1_raw };
+    let t2 = if t2_raw < MIN_FRAMES { MIN_FRAMES } else { t2_raw };
+    // Preserve t1 <= t2 invariant (both floored, Alert2 must not be stricter
+    // than Alert1 after clamping).
+    let t2 = if t2 < t1 { t1 } else { t2 };
+    (t1, t2)
+}
+
 impl AlertState {
     pub fn new() -> Self {
         Self {
@@ -29,16 +71,36 @@ impl AlertState {
         }
     }
 
-    /// Feed one processed EEG frame result. Returns the new alert level.
+    /// Feed one processed EEG frame using speed-independent defaults
+    /// (Alert1 = 5, Alert2 = 10). Kept for backward compatibility with
+    /// tests and callers that don't know the current vehicle speed.
     pub fn update(&mut self, is_drowsy: bool) -> AlertLevel {
+        self.update_with_thresholds(is_drowsy, 5, 10)
+    }
+
+    /// Feed one processed EEG frame with explicit thresholds (typically
+    /// derived from the current vehicle speed via `thresholds_for_speed`).
+    ///
+    /// Re-derives the alert level from the running counts every call, so
+    /// changing `t1`/`t2` mid-escalation is safe and consistent.
+    pub fn update_with_thresholds(
+        &mut self,
+        is_drowsy: bool,
+        t1: u32,
+        t2: u32,
+    ) -> AlertLevel {
+        // Enforce t1 <= t2 defensively.
+        let t2 = if t2 < t1 { t1 } else { t2 };
+
         if is_drowsy {
             self.drowsy_count = self.drowsy_count.saturating_add(1);
             self.normal_count = 0;
 
-            // Escalate
-            if self.drowsy_count >= 10 {
+            // Escalate: only move up, never demote here (de-escalation is
+            // handled exclusively by the normal-frame branch below).
+            if self.drowsy_count >= t2 {
                 self.level = AlertLevel::Alert2;
-            } else if self.drowsy_count >= 5 {
+            } else if self.drowsy_count >= t1 && self.level == AlertLevel::None {
                 self.level = AlertLevel::Alert1;
             }
         } else {
@@ -293,6 +355,108 @@ mod tests {
         assert_eq!(a.update(true), AlertLevel::None);   // 4th
         assert_eq!(a.update(true), AlertLevel::Alert1); // 5th ← transition
         assert_eq!(a.update(true), AlertLevel::Alert1); // 6th
+    }
+
+    // =====================================================================
+    //  1b. Speed-scaled threshold tests
+    // =====================================================================
+
+    #[test]
+    fn thresholds_at_reference_speed() {
+        // V_REF = 60 km/h: t1_raw=1.5→1→floored to 2, t2_raw=3→3
+        let (t1, t2) = thresholds_for_speed(60.0);
+        assert_eq!(t1, MIN_FRAMES);
+        assert_eq!(t2, 3);
+        assert!(t1 <= t2);
+    }
+
+    #[test]
+    fn thresholds_at_highway_speed() {
+        // 100 km/h: scale=0.6, t1_raw=0.9→0→2, t2_raw=1.8→1→2
+        let (t1, t2) = thresholds_for_speed(100.0);
+        assert_eq!(t1, MIN_FRAMES);
+        assert_eq!(t2, MIN_FRAMES);
+    }
+
+    #[test]
+    fn thresholds_at_low_speed() {
+        // 30 km/h: scale=2.0, t1_raw=3, t2_raw=6
+        let (t1, t2) = thresholds_for_speed(30.0);
+        assert_eq!(t1, 3);
+        assert_eq!(t2, 6);
+    }
+
+    #[test]
+    fn thresholds_at_zero_speed_clamped() {
+        // speed <= MIN_SPEED_KMH should use MIN_SPEED_KMH for scaling
+        let (t1_zero, t2_zero) = thresholds_for_speed(0.0);
+        let (t1_min, t2_min) = thresholds_for_speed(MIN_SPEED_KMH);
+        assert_eq!(t1_zero, t1_min);
+        assert_eq!(t2_zero, t2_min);
+    }
+
+    #[test]
+    fn thresholds_with_nan_clamped() {
+        // NaN speed must not propagate; falls back to MIN_SPEED_KMH behaviour
+        let (t1, t2) = thresholds_for_speed(f32::NAN);
+        let (t1_min, t2_min) = thresholds_for_speed(MIN_SPEED_KMH);
+        assert_eq!(t1, t1_min);
+        assert_eq!(t2, t2_min);
+    }
+
+    #[test]
+    fn thresholds_invariant_t1_le_t2() {
+        for speed in [5.0, 10.0, 30.0, 60.0, 90.0, 120.0, 200.0] {
+            let (t1, t2) = thresholds_for_speed(speed);
+            assert!(t1 >= MIN_FRAMES, "speed={}: t1={} below floor", speed, t1);
+            assert!(t1 <= t2, "speed={}: t1={} > t2={}", speed, t1, t2);
+        }
+    }
+
+    #[test]
+    fn scaled_alert1_fires_at_highway_speed() {
+        // At 120 km/h both thresholds are at MIN_FRAMES=2
+        let (t1, t2) = thresholds_for_speed(120.0);
+        let mut a = AlertState::new();
+        assert_eq!(a.update_with_thresholds(true, t1, t2), AlertLevel::None);
+        // 2nd frame: Alert1 (and Alert2, since t2==t1==2)
+        let level = a.update_with_thresholds(true, t1, t2);
+        assert_eq!(level, AlertLevel::Alert2);
+    }
+
+    #[test]
+    fn scaled_alert_levels_distinct_at_low_speed() {
+        // At 30 km/h: t1=3, t2=6 → distinct levels
+        let (t1, t2) = thresholds_for_speed(30.0);
+        assert_eq!((t1, t2), (3, 6));
+        let mut a = AlertState::new();
+        for _ in 0..2 {
+            assert_eq!(a.update_with_thresholds(true, t1, t2), AlertLevel::None);
+        }
+        assert_eq!(a.update_with_thresholds(true, t1, t2), AlertLevel::Alert1); // 3rd
+        for _ in 0..2 {
+            assert_eq!(a.update_with_thresholds(true, t1, t2), AlertLevel::Alert1);
+        }
+        assert_eq!(a.update_with_thresholds(true, t1, t2), AlertLevel::Alert2); // 6th
+    }
+
+    #[test]
+    fn mid_escalation_threshold_change_is_safe() {
+        // Start at 30 km/h (t1=3). Reach 2 drowsy frames.
+        // Speed drops to 10 km/h (t1=9). Next frame should NOT promote yet.
+        let (t1_fast, t2_fast) = thresholds_for_speed(30.0); // (3, 6)
+        let (t1_slow, t2_slow) = thresholds_for_speed(10.0); // scale=6, (9, 18)
+        let mut a = AlertState::new();
+        a.update_with_thresholds(true, t1_fast, t2_fast);
+        a.update_with_thresholds(true, t1_fast, t2_fast);
+        // dcnt=2, level=None. Now threshold gets harder.
+        assert_eq!(
+            a.update_with_thresholds(true, t1_slow, t2_slow),
+            AlertLevel::None,
+            "dcnt=3 but t1={} under slow thresholds -> no alert",
+            t1_slow
+        );
+        assert_eq!(a.drowsy_count(), 3);
     }
 
     // =====================================================================
