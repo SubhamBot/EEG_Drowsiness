@@ -93,11 +93,46 @@ Low power mode is genuine: PLL reconfigures from 168 → 48 MHz, and 4 out of 5 
 
 ## Alert Escalation
 
-| Condition | Alert Level |
-|-----------|------------|
-| 5 consecutive drowsy frames (ratio > 1.2) | **Alert1** |
-| 10 consecutive drowsy frames | **Alert1 + Alert2** |
-| 5 consecutive normal frames | De-escalate one level |
+Drowsiness is detected when the EEG alpha/beta ratio exceeds 1.2. Rather than using fixed frame thresholds, the number of consecutive drowsy frames required to trigger an alert **scales with vehicle speed** — faster speeds demand a faster reaction.
+
+### How Speed-Adaptive Thresholds Work
+
+At a reference speed of 60 km/h, Alert2 is designed to trigger within ~5 metres of travel. As speed increases, fewer frames are needed to stay within that distance budget. As speed decreases, more frames are required — avoiding false alarms when the driver is barely moving.
+
+```
+scale  = V_REF / current_speed        (V_REF = 60 km/h)
+t1_raw = ALERT1_BASE × scale          (ALERT1_BASE = 1.5)
+t2_raw = ALERT2_BASE × scale          (ALERT2_BASE = 3.0)
+t1, t2 = clamped to MIN_FRAMES = 2   (noise floor)
+```
+
+### Thresholds by Speed (Full Power, 100 ms per packet)
+
+| Speed | Alert1 frames (t1) | Alert2 frames (t2) | Packets to Alert1 | Packets to Alert2 |
+|-------|--------------------|--------------------|-------------------|-------------------|
+| ≤10 km/h | 9 | 18 | 9 packets | 18 packets |
+| 30 km/h | 3 | 6 | 3 packets | 6 packets |
+| 60 km/h | 2 | 3 | 2 packets | 3 packets |
+| 90 km/h | 2 | 2 | 2 packets | 2 packets |
+| 120 km/h | 2 | 2 | 2 packets | 2 packets |
+
+### Reaction Times by Speed (Full Power, 100 ms per packet)
+
+| Speed | Alert1 time | Alert2 time |
+|-------|-------------|-------------|
+| ≤10 km/h | 900 ms | 1800 ms |
+| 30 km/h | 300 ms | 600 ms |
+| 60 km/h | 200 ms | 300 ms |
+| 90 km/h | 200 ms | 200 ms |
+| 120 km/h | 200 ms | 200 ms |
+
+Above 90 km/h both thresholds hit the 2-frame noise floor — Alert1 and Alert2 trigger simultaneously. Below 90 km/h they remain distinct, giving a warning (Alert1) before the critical alert (Alert2).
+
+### De-escalation
+
+| Condition | Effect |
+|-----------|--------|
+| 5 consecutive normal frames | Drop one level: Alert2 → Alert1, Alert1 → None |
 
 A single normal frame resets the drowsy counter. A single drowsy frame resets the normal counter. Streaks must be unbroken.
 
