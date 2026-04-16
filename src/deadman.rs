@@ -306,14 +306,12 @@ impl DeadmanSwitch {
             flash.acr.modify(|_, w| w.latency().bits(0));
             match mode {
                 PowerMode::Full => {
-                    // APB1=4MHz, APB2=8MHz
-                    Self::set_baud_usart1_raw(69);  // 8M / 115200
+                    // APB1=4MHz
                     Self::set_baud_usart2_raw(417); // 4M / 9600
                 }
                 PowerMode::Low => {
-                    // APB1=8MHz, APB2=16MHz
-                    Self::set_baud_usart1_raw(139);  // 16M / 115200
-                    Self::set_baud_usart2_raw(833);  // 8M / 9600
+                    // APB1=8MHz
+                    Self::set_baud_usart2_raw(833); // 8M / 9600
                 }
             }
             rtt_target::rprintln!("[CLK] PLL FAILED - running on HSI 16 MHz");
@@ -332,8 +330,7 @@ impl DeadmanSwitch {
             flash.acr.modify(|_, w| w.latency().bits(1));
         }
 
-        // Step 7: Reconfigure UART baud rates for new PLL clock
-        Self::set_baud_usart1(mode);
+        // Step 7: Reconfigure UART baud rate for new PLL clock
         Self::set_baud_usart2(mode);
 
         // Step 8: Reconfigure I2C3 timings
@@ -341,19 +338,6 @@ impl DeadmanSwitch {
             PowerMode::Full => crate::i2c::I2c3::reconfigure(42),
             PowerMode::Low => crate::i2c::I2c3::reconfigure(24),
         }
-    }
-
-    fn set_baud_usart1(mode: PowerMode) {
-        let brr: u16 = match mode {
-            PowerMode::Full => 0x02D9, // 84 MHz APB2 / 115200
-            PowerMode::Low => 0x01A1,  // 48 MHz APB2 / 115200
-        };
-        Self::set_baud_usart1_raw(brr);
-    }
-
-    fn set_baud_usart1_raw(brr: u16) {
-        let usart1 = unsafe { &*pac::USART1::ptr() };
-        usart1.brr.write(|w| unsafe { w.bits(brr as u32) });
     }
 
     fn set_baud_usart2(mode: PowerMode) {

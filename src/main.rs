@@ -36,12 +36,13 @@ mod app {
     use crate::alert::AlertState;
     use crate::deadman::{DeadmanState, DeadmanSwitch, PowerMode};
     use crate::eeg_sensor::{EegData, EegSensor};
+    use crate::hc05::Hc05;
     use crate::i2c::I2c3;
     use crate::led::StatusLed;
     use crate::logger::LogWriter;
     use crate::speed_sensor::SpeedSensor;
     use crate::touch::{TouchScreen, UserButton};
-    use crate::uart::{UartDma, UartPort};
+    use crate::uart::UartDma;
     use core::fmt::Write;
     use stm32f4xx_hal::{
         pac,
@@ -50,8 +51,9 @@ mod app {
     };
 
     // --------------- buffer sizes ------------------------------------------------
-    const EEG_RX_BUF_SIZE: usize = 128;
-    const SPEED_RX_BUF_SIZE: usize = 128;
+    // Single shared Bluetooth RX buffer: both speed ("S,...") and EEG ("E,...")
+    // packets arrive interleaved on USART2 via HC-05.
+    const BT_RX_BUF_SIZE: usize = 128;
 
     // --------------- drowsiness algorithm constants ------------------------------
     const DROWSY_RATIO_THRESHOLD: f32 = 1.2;
@@ -67,10 +69,13 @@ mod app {
 
     #[local]
     struct Local {
-        eeg: EegSensor,
-        eeg_rx_buf: &'static mut [u8; EEG_RX_BUF_SIZE],
-        uart2: UartDma,
-        speed_rx_buf: &'static mut [u8; SPEED_RX_BUF_SIZE],
+        // ---- USART2 shared Bluetooth path (HC-05): dispatcher ----
+        // bt_uart extracts lines from the shared DMA buffer; each line is
+        // offered in turn to bt_speed and bt_eeg via their on_line() method.
+        bt_uart: UartDma,
+        bt_rx_buf: &'static mut [u8; BT_RX_BUF_SIZE],
+        bt_speed: SpeedSensor,
+        bt_eeg: EegSensor,
     }
 
     // --------------- init --------------------------------------------------------
@@ -83,14 +88,11 @@ mod app {
         rtt_target::rtt_init_print!(NoBlockSkip);
         rtt_target::rprintln!("EEG drowsiness detection -- RTT active (NoBlockSkip)");
 
-        // ---- static DMA buffers ----
-        static mut EEG_DMA_BUF: [u8; EEG_RX_BUF_SIZE] = [0; EEG_RX_BUF_SIZE];
-        static mut SPEED_DMA_BUF: [u8; SPEED_RX_BUF_SIZE] = [0; SPEED_RX_BUF_SIZE];
+        // ---- static DMA buffer (single shared Bluetooth RX) ----
+        static mut BT_DMA_BUF: [u8; BT_RX_BUF_SIZE] = [0; BT_RX_BUF_SIZE];
 
-        let eeg_rx_buf: &'static mut [u8; EEG_RX_BUF_SIZE] =
-            unsafe { &mut *core::ptr::addr_of_mut!(EEG_DMA_BUF) };
-        let speed_rx_buf: &'static mut [u8; SPEED_RX_BUF_SIZE] =
-            unsafe { &mut *core::ptr::addr_of_mut!(SPEED_DMA_BUF) };
+        let bt_rx_buf: &'static mut [u8; BT_RX_BUF_SIZE] =
+            unsafe { &mut *core::ptr::addr_of_mut!(BT_DMA_BUF) };
 
         // ---- clocks & GPIO ----
         let dp = ctx.device;
@@ -107,25 +109,16 @@ mod app {
                 .modify(|_, w| w.dma1en().set_bit().dma2en().set_bit());
         }
 
-        // ---- USART1 for EEG sensor (PA9 TX, PA10 RX) ----
-        let eeg_serial: Serial<_, u8> = Serial::new(
-            dp.USART1,
-            (gpioa.pa9.into_alternate(), gpioa.pa10.into_alternate()),
-            Config::default().baudrate(115200.bps()),
-            &clocks,
-        )
-        .unwrap();
-        core::mem::forget(eeg_serial);
-
-        // ---- USART2 for speed sensor via HC-05 (PA2 TX, PA3 RX) ----
-        let speed_serial: Serial<_, u8> = Serial::new(
+        // ---- USART2 for HC-05 Bluetooth link (PA2 TX, PA3 RX) ----
+        // Carries both speed ("S,...") and EEG ("E,...") packets interleaved.
+        let bt_serial: Serial<_, u8> = Serial::new(
             dp.USART2,
             (gpioa.pa2.into_alternate(), gpioa.pa3.into_alternate()),
-            Config::default().baudrate(9600.bps()),
+            Config::default().baudrate(Hc05::BAUD.bps()),
             &clocks,
         )
         .unwrap();
-        core::mem::forget(speed_serial);
+        core::mem::forget(bt_serial);
 
         // ---- I2C3 bus recovery (bit-bang to free stuck STMPE811) ----
         I2c3::bus_recovery();
@@ -151,8 +144,10 @@ mod app {
         let _user_btn = gpioa.pa0.into_floating_input();
 
         // ---- Sensor + touch + button init ----
-        EegSensor::init_dma(eeg_rx_buf);
-        SpeedSensor::init_dma(speed_rx_buf);
+        // Both sensors share the USART2 / HC-05 Bluetooth transport;
+        // `SpeedSensor::init_dma` (== `EegSensor::init_dma` == `Hc05::init_dma`)
+        // configures it once for the whole system.
+        SpeedSensor::init_dma(bt_rx_buf);
 
         // ---- Status LEDs (PG13 green, PG14 red) + blink timer (TIM3) ----
         StatusLed::init();
@@ -167,35 +162,12 @@ mod app {
         UserButton::init_exti();
         DeadmanSwitch::init_grace_timer();
 
-        // ---- USART1 diagnostic (for debugging USB-serial cable) ----
-        {
-            let usart1 = unsafe { &*pac::USART1::ptr() };
-            let dma2 = unsafe { &*pac::DMA2::ptr() };
-            rtt_target::rprintln!(
-                "USART1: CR1={:#06x} CR3={:#06x} BRR={:#06x} SR={:#06x}",
-                usart1.cr1.read().bits(),
-                usart1.cr3.read().bits(),
-                usart1.brr.read().bits(),
-                usart1.sr.read().bits(),
-            );
-            rtt_target::rprintln!(
-                "DMA2_S2: CR={:#010x} NDTR={} M0AR={:#010x}",
-                dma2.st[2].cr.read().bits(),
-                dma2.st[2].ndtr.read().bits(),
-                dma2.st[2].m0ar.read().bits(),
-            );
-            // Send test message on USART1 TX (PA9) — if the USB-serial
-            // cable is connected, reader.py will print this.
-            let test_msg = b"STM32_USART1_OK\r\n";
-            for &byte in test_msg {
-                while usart1.sr.read().txe().bit_is_clear() {}
-                usart1.dr.write(|w| unsafe { w.bits(byte as u32) });
-            }
-            while usart1.sr.read().tc().bit_is_clear() {}
-        }
+        // ---- HC-05 / USART2 diagnostic (confirms clocks, baud, DMA) ----
+        Hc05::diagnostic_dump();
+        Hc05::tx(b"STM32_HC05_OK\r\n");
 
         rtt_target::rprintln!(
-            "Init complete: touch={} EXTI15 EXTI0 TIM2 | EEG now via BT (USART2)",
+            "Init complete: touch={} EXTI15 EXTI0 TIM2 | speed+EEG via HC-05 (USART2)",
             if touch_ok { "OK(0x0811)" } else { "FAIL" }
         );
 
@@ -206,10 +178,10 @@ mod app {
                 deadman: DeadmanSwitch::new(),
             },
             Local {
-                eeg: EegSensor::new(),
-                eeg_rx_buf,
-                uart2: UartDma::new(),
-                speed_rx_buf,
+                bt_uart: UartDma::new(),
+                bt_rx_buf,
+                bt_speed: SpeedSensor::new(),
+                bt_eeg: EegSensor::new(),
             },
             init::Monotonics(),
         )
@@ -217,17 +189,21 @@ mod app {
 
     // --------------- sensor ISRs (thin shims) ------------------------------------
 
-    /// USART1 IDLE -> EEG sensor extracts data -> spawns drowsiness check
-    #[task(binds = USART1, local = [eeg, eeg_rx_buf])]
-    fn usart1_idle(ctx: usart1_idle::Context) {
-        ctx.local.eeg.on_idle(*ctx.local.eeg_rx_buf, |data| {
-            drowsiness_check::spawn(data).ok();
-        });
-    }
-
-    /// USART2 IDLE -> HC-05 Bluetooth carries BOTH speed and EEG packets.
-    /// Each line is tried against both parsers (prefix-based: "S,..." or "E,...").
-    #[task(binds = USART2, local = [uart2, speed_rx_buf, idle_count: u32 = 0])]
+    /// USART2 IDLE -> HC-05 Bluetooth shared stream.
+    ///
+    /// The Bluetooth link carries both speed ("S,...") and EEG ("E,...")
+    /// packets interleaved. `bt_uart` extracts complete newline-terminated
+    /// lines from the circular DMA buffer; each line is offered to every
+    /// sensor via its `on_line` method. The first sensor whose prefix
+    /// matches consumes the line and delivers a typed value to its
+    /// downstream task.
+    ///
+    /// This restores the "sensor owns its protocol" layering: main.rs is
+    /// just a dispatcher between the shared transport and the sensors.
+    #[task(
+        binds = USART2,
+        local = [bt_uart, bt_rx_buf, bt_speed, bt_eeg, idle_count: u32 = 0]
+    )]
     fn usart2_idle(ctx: usart2_idle::Context) {
         *ctx.local.idle_count += 1;
         let cnt = *ctx.local.idle_count;
@@ -235,21 +211,26 @@ mod app {
         if cnt <= 3 {
             let dma1 = unsafe { &*pac::DMA1::ptr() };
             let ndtr = dma1.st[5].ndtr.read().bits();
-            rtt_target::rprintln!(
-                "[U2] IDLE #{} NDTR={}",
-                cnt,
-                ndtr
-            );
+            rtt_target::rprintln!("[U2] IDLE #{} NDTR={}", cnt, ndtr);
         }
-        ctx.local
-            .uart2
-            .on_idle(&UartPort::Usart2, *ctx.local.speed_rx_buf, |line| {
-                if let Some(speed) = SpeedSensor::parse(line) {
-                    update_speed::spawn(speed).ok();
-                } else if let Some(eeg) = EegSensor::parse(line) {
-                    drowsiness_check::spawn(eeg).ok();
-                }
+
+        // Destructure once so the closure below can borrow the sensor
+        // resources independently of `bt_uart` (they are disjoint fields
+        // of the Local struct — Rust 2021 disjoint captures allow this).
+        let bt_speed = ctx.local.bt_speed;
+        let bt_eeg = ctx.local.bt_eeg;
+
+        ctx.local.bt_uart.on_idle(*ctx.local.bt_rx_buf, |line| {
+            // Try sensors in order; stop at the first match.
+            if bt_speed.on_line(line, |speed| {
+                update_speed::spawn(speed).ok();
+            }) {
+                return;
+            }
+            bt_eeg.on_line(line, |data| {
+                drowsiness_check::spawn(data).ok();
             });
+        });
     }
 
     // --------------- dead man's switch -------------------------------------------
